@@ -3,6 +3,7 @@ from src.app.routes import routes
 from src.app.models.roles import create_collection_roles
 from src.app.models.users import create_collection_users
 from src.app.models.employers import create_collection_employers
+from src.app.models.items import create_collection_items
 from flask.cli import with_appcontext
 import click
 
@@ -14,7 +15,7 @@ def call_command():
   create_collection_roles(mongo_client)
   create_collection_users(mongo_client)
   create_collection_employers(mongo_client)
-
+  create_collection_items(mongo_client)
 
 app.cli.add_command(call_command)
 
