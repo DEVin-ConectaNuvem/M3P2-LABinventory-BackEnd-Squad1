@@ -1,16 +1,23 @@
-import json
 from flask import Blueprint, request
 from flask.wrappers import Response
-from src.app import mongo_client
 from bson import json_util
+from src.app.services.users_services import create_user
 
 users = Blueprint("users", __name__,  url_prefix="/users")
 
-@users.route("/create", methods = ["GET"])
+@users.route("/create", methods = ["POST"])
 def create():
-    response = "Ainda em desenvolvimento"
+    response = create_user(request.get_json())
+
+    if "error" in response:
+        return Response(
+            response=json_util.dumps(response),
+            status=400,
+            mimetype='application/json'
+        )
+
     return Response(
-    response=json_util.dumps(response),
-    status=201,
-    mimetype='application/json'
-  )
+        response=json_util.dumps(response),
+        status=201,
+        mimetype='application/json'
+    )
