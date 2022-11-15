@@ -2,7 +2,7 @@ def create_collection_employers(mongo_client):
   employers_validator = {
     "$jsonSchema": {
         "bsonType": "object",
-        "required": ["_id", "name", "birthDay", "email", "phone", "gender", "zipcode", "city", "state", "street", "houseNumber", "neighborhood", "position", "profile_image", "complement", "reference"],
+        "required": ["_id", "name", "birthDay", "email", "phone", "gender", "zipcode", "city", "state", "street", "houseNumber", "neighborhood", "position", "complement", "reference"],
         "properties": {
             "_id": {
               "bsonType": "objectId",
