@@ -1,6 +1,6 @@
 import os
 from flask import Flask
-from src.app import app_config
+from src.app.config import app_config
 from src.app.swagger import create_swagger
 from flask_cors import CORS
 from src.app.utils import mongo
