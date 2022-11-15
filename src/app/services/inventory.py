@@ -1,43 +1,42 @@
-import json
 from .database import Database
 
-class EmployersService:
+class inventoryService:
     def __init__(self):
-        self.db = Database('employers')
+        self.db = Database('items')
         
-    def create_employer(self, employer):
+    def create_inventory(self, inventory):
         try:
-            return self.db.create(employer)
+            return self.db.create(inventory)
         except Exception as e:
             # error_details = json.loads(e.error).errInfo
             return e
 
-    def get_employers(self):
+    def get_inventory(self):
         try:
             return self.db.get_all()
         except Exception as e:
             return e
         
-    def get_employer(self, data):
+    def find_inventory(self, data):
         try:
             return self.db.get_one(data)
         except Exception as e:
             return e
     
-    def get_employer_by_id(self, employer_id):
+    def get_inventory_by_id(self, inventory_id):
         try:
-            return self.db.get_by_id(employer_id)
+            return self.db.get_by_id(inventory_id)
         except Exception as e:
             return e
         
-    def update_employer(self, data):
+    def update_inventory(self, data):
         try:
             return self.db.update(data)
         except Exception as e:
             return e
             
-    def delete_employer(self, employer_id):
+    def delete_inventory(self, inventory_id):
         try:
-            return self.db.delete(employer_id)
+            return self.db.delete(inventory_id)
         except Exception as e:
             return e
