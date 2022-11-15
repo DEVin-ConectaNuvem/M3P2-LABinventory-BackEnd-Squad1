@@ -28,6 +28,7 @@ def create_collection_employers(mongo_client):
             },
             "phone": {
               "bsonType": "string",
+              "pattern": "^[0-9]{10,11}$",
               "description": "Telefone do colaborador"
             },
             "gender": {
