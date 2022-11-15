@@ -10,10 +10,12 @@ def create_collection_users(mongo_client):
             },
             "email": {
               "bsonType": "string",
-              "description": "Email do usuário",
+              "pattern": "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+.[a-zA-Z]{2,10}$",
+              "description": "Email do usuário" 
             },
             "password": {
               "bsonType": "string",
+              "pattern": "^[a-zA-Z0-9._%+-]{8,99}$",
               "description": "Senha do usuário"
             },
             "role": {
