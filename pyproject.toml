@@ -1,0 +1,24 @@
+[tool.poetry]
+name = "app"
+version = "0.1.0"
+description = ""
+authors = ["Thiago William <thiago.santos@conectanuvem.com.br>"]
+readme = "README.md"
+packages = [{include = "app", from = "src"}]
+
+[tool.poetry.dependencies]
+python = "^3.9"
+python-dotenv = "^0.21.0"
+requests = "^2.28.1"
+google-auth-oauthlib = "^0.7.1"
+google-auth = "^2.14.1"
+flask-cors = "^3.0.10"
+pytest = "^7.2.0"
+pytest-flask = "^1.2.0"
+pytest-cov = "^4.0.0"
+flask = "^2.2.2"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
