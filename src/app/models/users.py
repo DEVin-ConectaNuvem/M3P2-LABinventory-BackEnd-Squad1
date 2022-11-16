@@ -1,5 +1,4 @@
-def create_collection_users(mongo_client):
-  users_validator = {
+users_validator = {
     "$jsonSchema": {
         "bsonType": "object",
         "required": ["_id", "email", "password", "role"],
@@ -26,6 +25,7 @@ def create_collection_users(mongo_client):
     }
   }
 
+def create_collection_users(mongo_client):
   try:
     print("Criando a collection USERS...")
     mongo_client.create_collection("users")

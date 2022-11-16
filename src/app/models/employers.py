@@ -1,5 +1,4 @@
-def create_collection_employers(mongo_client):
-  employers_validator = {
+employers_validator = {
     "$jsonSchema": {
         "bsonType": "object",
         "required": ["_id", "name", "birthDay", "email", "phone", "gender", "zipcode", "city", "state", "street", "houseNumber", "neighborhood", "position", "complement", "reference"],
@@ -77,6 +76,7 @@ def create_collection_employers(mongo_client):
     }
   }
 
+def create_collection_employers(mongo_client):
   try:
     print("Criando a collection EMPLOYERS...")
     mongo_client.create_collection("employers")
