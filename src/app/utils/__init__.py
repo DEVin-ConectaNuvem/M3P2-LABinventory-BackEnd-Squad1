@@ -2,6 +2,9 @@ from flask_pymongo import PyMongo
 
 mongo = PyMongo()
 
+from flask import current_app
+from jwt import encode
+
 def exist_key(request_json, list_keys):
   keys_not_have_in_request = []
 
@@ -15,3 +18,8 @@ def exist_key(request_json, list_keys):
     return request_json
 
   return {"error":  f"Está faltando o item {keys_not_have_in_request}"}
+
+
+def generate_jwt(payload):
+  token = encode(payload, current_app.config["SECRET_KEY"], "HS256")
+  return token
