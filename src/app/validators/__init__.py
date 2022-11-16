@@ -10,10 +10,11 @@ validators_source = {
 
 convertTypes ={
     "string": str,
+    "objectId": str,
     "int": int,
-    "float": float,
+    "double": float,
     "bool": bool,
-    "list": list,
+    "array": list,
     "dict": dict,
 }
 
