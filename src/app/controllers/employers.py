@@ -2,17 +2,11 @@ from src.app.services import employers as employers_service
 from flask import Blueprint, request
 from flask.wrappers import Response
 from bson import json_util
-from src.app.validators import (
-    decorator_validate_types,
-    decorator_validate_required_keys,
-)
 
 employers = Blueprint("employers", __name__, url_prefix="/employers")
 employersService = employers_service.EmployersService()
 
 
-@decorator_validate_types
-@decorator_validate_required_keys
 @employers.route("/create", methods=["POST"])
 def create():
     data = request.get_json()
@@ -44,8 +38,6 @@ def get_by_id():
     )
 
 
-@decorator_validate_types
-@decorator_validate_required_keys
 @employers.route("/update", methods=["PATCH"])
 def update():
     data = request.get_json()

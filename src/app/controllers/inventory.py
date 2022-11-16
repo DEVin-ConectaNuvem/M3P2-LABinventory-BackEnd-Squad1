@@ -2,16 +2,11 @@ from src.app.services import inventory as inventory_service
 from flask import Blueprint, request
 from flask.wrappers import Response
 from bson import json_util
-from src.app.validators import (
-    decorator_validate_types,
-    decorator_validate_required_keys,
-)
 
 inventory = Blueprint("inventory", __name__, url_prefix="/inventory")
 inventoryService = inventory_service.inventoryService()
 
-@decorator_validate_types
-@decorator_validate_required_keys
+
 @inventory.route("/create", methods=["POST"])
 def create():
     data = request.get_json()
@@ -42,8 +37,7 @@ def get_by_id():
         response=json_util.dumps(response), status=200, mimetype="application/json"
     )
 
-@decorator_validate_types
-@decorator_validate_required_keys
+
 @inventory.route("/update", methods=["PATCH"])
 def update():
     data = request.get_json()
@@ -53,8 +47,7 @@ def update():
         response=json_util.dumps(response), status=200, mimetype="application/json"
     )
 
-@decorator_validate_types
-@decorator_validate_required_keys
+
 @inventory.route("/delete", methods=["DELETE"])
 def delete():
     response = inventoryService.delete_inventory(request.args)
