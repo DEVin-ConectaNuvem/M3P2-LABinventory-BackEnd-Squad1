@@ -1,5 +1,4 @@
-def create_collection_roles(mongo_client):
-  roles_validator = {
+roles_validator = {
     "$jsonSchema": {
         "bsonType": "object",
         "required": ["_id","name", "description", "permissions"],
@@ -28,6 +27,7 @@ def create_collection_roles(mongo_client):
     }
   }
 
+def create_collection_roles(mongo_client):
   try:
     print("Criando a collection ROLES...")
     mongo_client.create_collection("roles")

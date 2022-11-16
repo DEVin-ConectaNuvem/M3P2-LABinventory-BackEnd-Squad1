@@ -2,15 +2,21 @@ from src.app.services import employers as employers_service
 from flask import Blueprint, request
 from flask.wrappers import Response
 from bson import json_util
+from src.app.validators import (
+    decorator_validate_types,
+    decorator_validate_required_keys,
+)
 
 employers = Blueprint("employers", __name__, url_prefix="/employers")
 employersService = employers_service.EmployersService()
 
+
+@decorator_validate_types
+@decorator_validate_required_keys
 @employers.route("/create", methods=["POST"])
 def create():
     data = request.get_json()
-    response = employersService.create_employer(data)
-    print(response)
+    response = employersService.create_employer(data, "employers", "teste")
     return Response(json_util.dumps(response), mimetype="application/json")
 
 
@@ -38,10 +44,12 @@ def get_by_id():
     )
 
 
+@decorator_validate_types
+@decorator_validate_required_keys
 @employers.route("/update", methods=["PATCH"])
 def update():
     data = request.get_json()
-    response = employersService.update_employer(data)
+    response = employersService.update_employer(data, "employers")
     print(response)
     return Response(
         response=json_util.dumps(response), status=200, mimetype="application/json"
@@ -50,7 +58,8 @@ def update():
 
 @employers.route("/delete", methods=["DELETE"])
 def delete():
-    response = employersService.delete_employer(request.args)
+    data = request.get_json()
+    response = employersService.delete_employer(data, "employers")
     return Response(
         response=json_util.dumps(response), status=200, mimetype="application/json"
     )

@@ -1,5 +1,4 @@
-def create_collection_items(mongo_client):
-  items_validator = {
+items_validator = {
     "$jsonSchema": {
         "bsonType": "object",
         "required": ["_id", "title", "description", "category", "value", "brand", "model", "collaborator"],
@@ -41,6 +40,7 @@ def create_collection_items(mongo_client):
     }
   }
 
+def create_collection_items(mongo_client):
   try:
     print("Criando a collection ITEMS...")
     mongo_client.create_collection("items")
