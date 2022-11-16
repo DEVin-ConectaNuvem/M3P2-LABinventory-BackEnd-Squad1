@@ -1,0 +1,74 @@
+import requests
+import json
+import os
+import random
+from flask import request, current_app
+from werkzeug.utils import redirect
+from flask.globals import session
+from google import auth
+from google.oauth2 import id_token
+from google_auth_oauthlib.flow import Flow
+from jwt import decode
+from src.app.services.users_services import create_user
+from src.app.utils import exist_key, generate_jwt
+from src.app import mongo_client
+
+def callback_google():
+
+    flow.fetch_token(authorization_response = request.url)
+    credentials = flow.credentials
+    request_session = requests.session()
+    token_google = auth.transport.requests.Request(session=request_session)
+
+    user_google_dict = id_token.verify_oauth2_token(
+        id_token = credentials.id_token,
+        request=token_google,
+        audience=current_app.config['GOOGLE_CLIENT_ID']
+    )
+
+    user = mongo_client.users.find_one({'email': user_google_dict['email']})
+
+    password_gerado = gera_password()
+    user_google_dict['password'] = password_gerado
+
+    if user == None:
+        create_user(user_google_dict)
+        user = mongo_client.users.find_one({'email': user_google_dict['email']})
+
+    user_google_dict["user_id"] = str(user['_id'])
+    user_google_dict["roles"] = str(user['role'])
+
+    session["google_id"] = user_google_dict.get("sub")
+
+    del user_google_dict['aud']
+    del user_google_dict['azp']
+
+    token = generate_jwt(user_google_dict)
+
+    return redirect(f"{current_app.config['FRONTEND_URL']}?jwt={token}")
+
+
+
+flow = Flow.from_client_secrets_file(
+    client_secrets_file="src/app/database/client_secret.json",
+    scopes=[
+        "https://www.googleapis.com/auth/userinfo.email",
+        "https://www.googleapis.com/auth/userinfo.profile",
+        "openid"
+    ],
+    redirect_uri = "http://localhost:5000/users/callback"
+)
+
+def gera_password(): 
+    letras = "abcdefghijklmnopqrstuvwxyzABCEFGHIJKLMNOPQRSTUVWXYZ123456789"
+    caracter = '!@#$%&^*-_'
+
+    password = ""
+
+    for i in range(0, 1):
+        password_caracter = random.choice(caracter)
+        password += password_caracter
+        for h in range(0, 14):
+            password_letras = random.choice(letras)
+            password += password_letras
+    return password
