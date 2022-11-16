@@ -1,12 +1,18 @@
 from .database import Database
-
+from src.app.validators import (
+    decorator_validate_types,
+    decorator_validate_required_keys,
+)
 class inventoryService:
     def __init__(self):
         self.db = Database('items')
-        
-    def create_inventory(self, inventory):
+    
+    @decorator_validate_types
+    @decorator_validate_required_keys
+    def create_inventory(self, *args):
         try:
-            return self.db.create(inventory)
+            data = args[0]
+            return self.db.create(data)
         except Exception as e:
             # error_details = json.loads(e.error).errInfo
             return e
@@ -28,9 +34,12 @@ class inventoryService:
             return self.db.get_by_id(inventory_id)
         except Exception as e:
             return e
-        
-    def update_inventory(self, data):
+    
+    @decorator_validate_types
+    @decorator_validate_required_keys
+    def update_inventory(self, *args):
         try:
+            data = args[0]
             return self.db.update(data)
         except Exception as e:
             return e

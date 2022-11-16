@@ -46,8 +46,6 @@ class EmployersService:
         except Exception as e:
             return e
 
-    @decorator_validate_types
-    @decorator_validate_required_keys
     def delete_employer(self, *args):
         try:
             data = args[0]
