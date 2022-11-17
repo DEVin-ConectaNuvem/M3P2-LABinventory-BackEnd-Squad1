@@ -2,6 +2,7 @@ from datetime import datetime, timedelta
 from src.app import mongo_client
 from bson import json_util
 from src.app.utils import generate_jwt, exist_key
+from bson.objectid import ObjectId
 import bcrypt
 
 
@@ -49,15 +50,18 @@ def login_user(request_data):
 
     user_query = mongo_client.users.find_one({'email': data['email']})
 
+    role_query = mongo_client.roles.find_one({'_id': ObjectId(user_query['role'])})
+
     if user_query == None:
       return { "error": "Suas credênciais estão incorretas!", "status_code": 401 }
     elif not check_password(user_query, data['password']):
       return { "error": "Suas credênciais estão incorretas!", "status_code": 401 }
     
     payload = {
-      "user_id": str(user_query['_id']),
+      "email": user_query['email'],
       "exp": datetime.utcnow() + timedelta(days=1),
-      "roles": str(user_query['role'])
+      "roles_description": role_query['description'],
+      "roles_permissions": role_query['permissions']
     }
 
     token = generate_jwt(payload)
@@ -77,6 +81,9 @@ def create_user(request_data):
 
     if "error" in data:
       return data
+
+    if len(data['password']) < 8:
+      return {"error": "A senha deve ter no mínimo 8 caracteres"}
 
     exist_user = mongo_client.users.find_one({'email': data['email']})
 
