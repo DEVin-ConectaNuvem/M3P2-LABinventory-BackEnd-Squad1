@@ -1,5 +1,5 @@
 from src.app.services import inventory as inventory_service
-from flask import Blueprint, request
+from flask import Blueprint, request, json
 from flask.wrappers import Response
 from bson import json_util
 
@@ -52,4 +52,13 @@ def delete():
     response = inventoryService.delete_inventory(request.args)
     return Response(
         response=json_util.dumps(response), status=200, mimetype="application/json"
+    )
+
+@inventory.route("/analytics", methods=["GET"])
+def get_analytics():
+    response = inventoryService.get_analytics()
+    return Response(
+        response=json.dumps(response),
+        status=200,
+        mimetype="application/json"
     )
