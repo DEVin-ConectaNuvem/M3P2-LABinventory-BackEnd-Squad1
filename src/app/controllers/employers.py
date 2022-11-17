@@ -6,11 +6,11 @@ from bson import json_util
 employers = Blueprint("employers", __name__, url_prefix="/employers")
 employersService = employers_service.EmployersService()
 
+
 @employers.route("/create", methods=["POST"])
 def create():
     data = request.get_json()
-    response = employersService.create_employer(data)
-    print(response)
+    response = employersService.create_employer(data, "employers", "teste")
     return Response(json_util.dumps(response), mimetype="application/json")
 
 
@@ -41,7 +41,7 @@ def get_by_id():
 @employers.route("/update", methods=["PATCH"])
 def update():
     data = request.get_json()
-    response = employersService.update_employer(data)
+    response = employersService.update_employer(data, "employers")
     print(response)
     return Response(
         response=json_util.dumps(response), status=200, mimetype="application/json"
@@ -50,7 +50,8 @@ def update():
 
 @employers.route("/delete", methods=["DELETE"])
 def delete():
-    response = employersService.delete_employer(request.args)
+    data = request.get_json()
+    response = employersService.delete_employer(data, "employers")
     return Response(
         response=json_util.dumps(response), status=200, mimetype="application/json"
     )

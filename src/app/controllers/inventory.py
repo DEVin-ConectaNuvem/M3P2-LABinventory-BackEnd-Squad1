@@ -6,6 +6,7 @@ from bson import json_util
 inventory = Blueprint("inventory", __name__, url_prefix="/inventory")
 inventoryService = inventory_service.inventoryService()
 
+
 @inventory.route("/create", methods=["POST"])
 def create():
     data = request.get_json()
