@@ -22,13 +22,13 @@ def requires_access_level(permission):
       try:
         token_pure = token.replace("Bearer ", "")
         decoded = decode(token_pure, current_app.config['SECRET_KEY'], 'HS256')
-        current_user = mongo_client.users.find_one({'_id': ObjectId(decoded['user_id'])})
+        current_user = mongo_client.users.find_one({'email': decoded['email']})
       except:
         return jsonify({"error": "O token é inválido"}), 403
       
       found_permission = 0
 
-      query_role = mongo_client.roles.find_one({'_id': ObjectId(decoded['roles'])})
+      query_role = mongo_client.roles.find_one({'description': decoded['roles_description']})
 
  
 
