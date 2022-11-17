@@ -27,7 +27,7 @@ def requires_access_level(permission):
         return jsonify({"error": "O token é inválido"}), 403
       
       found_permission = 0
-      print(decoded)
+
       query_role = mongo_client.roles.find_one({'description': decoded['roles_description']})
 
  
