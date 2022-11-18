@@ -4,33 +4,34 @@ users_validator = {
         "required": ["_id", "email", "password", "role"],
         "properties": {
             "_id": {
-              "bsonType": "objectId",
-              "description": "Chave definida da collection"
+                "bsonType": "objectId",
+                "description": "Chave definida da collection",
             },
             "email": {
-              "bsonType": "string",
-              "pattern": "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+.[a-zA-Z]{2,10}$",
-              "description": "Email do usuário" 
+                "bsonType": "string",
+                "pattern": "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+[.]+[a-zA-Z]{2,10}$",
+                "description": "Email do usuário",
             },
             "password": {
-              "bsonType": "string",
-              "pattern": "^[a-zA-Z0-9._%+-]{8,99}$",
-              "description": "Senha do usuário"
+                "bsonType": "string",
+                "pattern": "^[a-zA-Z0-9.!@#$%&*/_%+-]{8,99}$",
+                "description": "Senha do usuário",
             },
             "role": {
-              "bsonType": "objectId",
-              "description": "Vinculo da collection roles",
-            }
+                "bsonType": "objectId",
+                "description": "Vinculo da collection roles",
+            },
         },
     }
-  }
+}
+
 
 def create_collection_users(mongo_client):
-  try:
-    print("Criando a collection USERS...")
-    mongo_client.create_collection("users")
-    print("USERS CRIADO COM SUCESSO.")
-  except Exception as e:
-    print(e)
+    try:
+        print("Criando a collection USERS...")
+        mongo_client.create_collection("users")
+        print("USERS CRIADO COM SUCESSO.")
+    except Exception as e:
+        print(e)
 
-  mongo_client.command("collMod", "users", validator=users_validator)
+    mongo_client.command("collMod", "users", validator=users_validator)
