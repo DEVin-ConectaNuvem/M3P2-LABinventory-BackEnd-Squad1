@@ -1,5 +1,6 @@
+import os
 import pytest
-from src.app import create_app
+from src.app import create_app, mongo_client
 from src.app.routes import routes
 from flask import json
 
@@ -11,7 +12,9 @@ headers = {
 
 @pytest.fixture(scope="session")
 def app():
-    app_on = create_app('testing')
+    os.system("poetry run flask create_collections")
+    
+    app_on = create_app(os.getenv("FLASK_ENV"))
     routes(app_on)
     return app_on
 
@@ -19,7 +22,7 @@ def app():
 @pytest.fixture
 def create_user_in_client(client):
     data = {
-        "email": "teste@teste.com",
+        "email": "thiago@teste.com",
         "password": "12345678"
     }
     

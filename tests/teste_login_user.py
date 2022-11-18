@@ -9,7 +9,7 @@ headers = {
     'Accept': mimetype
 }
 
-def test_create_user(client, logged_in_client):
-    headers["Authorization"] = f"Bearer {logged_in_client}"
+def test_create_user(client, create_user_in_client):
+    headers["Authorization"] = f"Bearer {create_user_in_client}"
 
-    assert isinstance(logged_in_client, str) == True
+    assert create_user_in_client == True

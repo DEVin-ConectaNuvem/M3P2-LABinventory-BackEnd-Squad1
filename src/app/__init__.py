@@ -7,10 +7,9 @@ from src.app.utils import mongo
 
 def create_app(enviroment):
     global mongo_client
-
+    
     app = Flask(__name__)
     app.config.from_object(app_config[enviroment])
-    app.config["MONGO_URI"] = os.getenv("MONGO_URI")
 
     create_swagger(app)
     mongo.init_app(app)

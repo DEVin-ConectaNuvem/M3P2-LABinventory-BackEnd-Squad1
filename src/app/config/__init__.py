@@ -8,6 +8,7 @@ class Development(object):
     DEBUG = True
     TESTING = False
     DATABASE_URI = ""
+    MONGO_URI = os.getenv("MONGO_URI")
     SECRET_KEY = os.getenv("SECRET_KEY")
     GOOGLE_CLIENT_ID = os.getenv("GOOGLE_CLIENT_ID")
     OAUTHLIB_INSECURE_TRANSPORT = os.getenv("OAUTHLIB_INSECURE_TRANSPORT")
@@ -19,6 +20,7 @@ class Testing(object):
     DEBUG = False
     TESTING = True
     DATABASE_URI = ""
+    MONGO_URI = os.getenv("MONGO_URI_TESTING")
     SECRET_KEY = os.getenv("SECRET_KEY")
     GOOGLE_CLIENT_ID = os.getenv("GOOGLE_CLIENT_ID")
     OAUTHLIB_INSECURE_TRANSPORT = os.getenv("OAUTHLIB_INSECURE_TRANSPORT")
