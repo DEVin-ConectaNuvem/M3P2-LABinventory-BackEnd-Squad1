@@ -22,9 +22,13 @@ class inventoryService:
             # error_details = json.loads(e.error).errInfo
             return e
 
-    def get_inventory(self):
+    def get_inventory(self, payload=None):
         try:
-            return self.db.get_all()
+            if(payload):
+                return self.db.get_data_with_paginate(payload)
+            else:
+                res = self.db.get_all()
+                return res
         except Exception as e:
             return e
         

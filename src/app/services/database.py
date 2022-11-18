@@ -1,4 +1,3 @@
-import json
 from bson import ObjectId, json_util
 from src.app import mongo_client
 
@@ -6,11 +5,10 @@ import re
 
 
 class Database(object):
-    def __init__(self, collection, validator=None):
+    def __init__(self, collection):
         self.collection = collection
-        self.validator = validator
 
-    def create(self, data, validator=None):
+    def create(self, data):
         try:
             response = mongo_client[self.collection].insert_one(data)
             result = {"id": str(response.inserted_id)}
@@ -18,7 +16,19 @@ class Database(object):
         except Exception as e:
             return {"error": str(e)}
 
-    def get_one(self, data, validator=None):
+    def get_data_with_paginate(self, data):
+        try:
+            response = (
+                mongo_client[self.collection]
+                .find()
+                .skip(data["skip"])
+                .limit(data["limit"])
+            )
+            return response
+        except Exception as e:
+            return {"error": str(e)}
+
+    def get_one(self, data):
         try:
             data_with_like = [
                 {key: {"$regex": re.compile(value, re.IGNORECASE)}}
@@ -31,14 +41,14 @@ class Database(object):
         except Exception as e:
             return {"error": str(e)}
 
-    def get_all(self, validator=None):
+    def get_all(self):
         try:
             response = mongo_client[self.collection].find()
             return response
         except Exception as e:
             return {"error": str(e)}
 
-    def get_by_id(self, id, validator=None):
+    def get_by_id(self, id):
         try:
             response = mongo_client[self.collection].find_one(
                 {"_id": ObjectId(id["id"])}
@@ -47,7 +57,7 @@ class Database(object):
         except Exception as e:
             return {"error": str(e)}
 
-    def update(self, data, validator=None):
+    def update(self, data):
         try:
             id = {"_id": ObjectId(data["id"])}
             data_set = {"$set": data["dataset"]}
@@ -57,14 +67,14 @@ class Database(object):
         except Exception as e:
             return {"error": str(e)}
 
-    def delete(self, data, validator=None):
+    def delete(self, data):
         try:
             response = mongo_client[self.collection].delete_one(data)
             return response
         except Exception as e:
             return {"error": str(e)}
 
-    def count(self, data, validator=None):
+    def count(self, data):
         try:
             response = mongo_client[self.collection].count_documents(data)
             return response

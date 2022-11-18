@@ -19,9 +19,13 @@ class EmployersService:
             # error_details = json.loads(e.error).errInfo
             return e
 
-    def get_employers(self):
+    def get_employers(self, payload=None):
         try:
-            return self.db.get_all()
+            if(payload):
+                return self.db.get_data_with_paginate(payload)
+            else:
+                res = self.db.get_all()
+                return res
         except Exception as e:
             return e
 
