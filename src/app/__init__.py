@@ -5,12 +5,19 @@ from src.app.swagger import create_swagger
 from flask_cors import CORS
 from src.app.utils import mongo
 
-app = Flask(__name__)
-app.config.from_object(app_config[os.getenv("FLASK_ENV")])
-app.config["MONGO_URI"] = os.getenv("MONGO_URI")
+def create_app(enviroment):
+    global mongo_client
 
-create_swagger(app)
-mongo.init_app(app)
-mongo_client = mongo.db
+    app = Flask(__name__)
+    app.config.from_object(app_config[enviroment])
+    app.config["MONGO_URI"] = os.getenv("MONGO_URI")
 
-CORS(app)
+    create_swagger(app)
+    mongo.init_app(app)
+    mongo_client = mongo.db
+
+    CORS(app)
+    
+    return app
+    
+app = create_app(os.getenv("FLASK_ENV"))
