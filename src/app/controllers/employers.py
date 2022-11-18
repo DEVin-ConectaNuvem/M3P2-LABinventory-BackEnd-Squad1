@@ -23,7 +23,16 @@ def get_find():
 
 @employers.route("/", methods=["GET"])
 def get_all():
-    response = employersService.get_employers()
+    page = request.args.get("page") or False
+    limit = request.args.get("limit") or False
+    payload = {}
+    if page and limit:
+        payload = {
+            "filter": {},
+            "skip": (int(page) - 1) * int(limit),
+            "limit": int(limit),
+        }
+    response = employersService.get_employers(payload)
     return Response(
         response=json_util.dumps(response), status=200, mimetype="application/json"
     )
