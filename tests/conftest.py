@@ -14,7 +14,7 @@ headers = {
 def app():
     os.system("poetry run flask create_collections")
     
-    app_on = create_app(os.getenv("FLASK_ENV"))
+    app_on = create_app('testing')
     routes(app_on)
     return app_on
 
