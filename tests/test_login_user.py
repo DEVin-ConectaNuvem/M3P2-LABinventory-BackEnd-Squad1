@@ -27,5 +27,16 @@ def test_login_user_successfully(client):
     
     assert response.status_code == 200
     assert isinstance(response.json['token'], str)
+    
+    
+def test_login_user_with_invalid_email(client):
+    data = {
+        "email": fake.email(),
+        "password": "12345678"
+    }
 
-  
+    response = client.post("users/login", data=json.dumps(data), headers=headers)
+
+    assert response.status_code == 401
+    assert response.json['error'] == "Suas credênciais estão incorretas!"
+    assert response.json['status_code'] == 401

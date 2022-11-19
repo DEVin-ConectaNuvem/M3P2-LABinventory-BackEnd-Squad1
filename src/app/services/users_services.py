@@ -43,33 +43,32 @@ def check_password(self, password):
 
 
 def login_user(request_data):
-  try:
+	try:
+		list_keys = ["email", "password"]
+		data = exist_key(request_data, list_keys)
 
-    list_keys = ["email", "password"]
-    data = exist_key(request_data, list_keys)
+		user_query = mongo_client.users.find_one({'email': data['email']})
 
-    user_query = mongo_client.users.find_one({'email': data['email']})
+		if user_query == None:
+			return { "error": "Suas credênciais estão incorretas!", "status_code": 401 }
 
-    role_query = mongo_client.roles.find_one({'_id': ObjectId(user_query['role'])})
+		role_query = mongo_client.roles.find_one({'_id': ObjectId(user_query['role'])})
 
-    if user_query == None:
-      return { "error": "Suas credênciais estão incorretas!", "status_code": 401 }
-    elif not check_password(user_query, data['password']):
-      return { "error": "Suas credênciais estão incorretas!", "status_code": 401 }
+		if not check_password(user_query, data['password']):
+			return { "error": "Suas credênciais estão incorretas!", "status_code": 401 }
     
-    payload = {
-      "email": user_query['email'],
-      "exp": datetime.utcnow() + timedelta(days=1),
-      "roles_description": role_query['description'],
-      "roles_permissions": role_query['permissions']
-    }
+		payload = {
+			"email": user_query['email'],
+			"exp": datetime.utcnow() + timedelta(days=1),
+			"roles_description": role_query['description'],
+			"roles_permissions": role_query['permissions']
+		}
 
-    token = generate_jwt(payload)
+		token = generate_jwt(payload)
 
-    return { "token": token }
-
-  except:
-    return { "error": "Algo deu errado!", "status_code": 500 }
+		return { "token": token }
+	except:
+		return { "error": "Algo deu errado!", "status_code": 500 }
 
 
 def create_user(request_data):
