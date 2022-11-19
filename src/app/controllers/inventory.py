@@ -10,23 +10,24 @@ inventoryService = inventory_service.inventoryService()
 @inventory.route("/create", methods=["POST"])
 def create():
     data = request.get_json()
-    response = inventoryService.create_inventory(data)
+    response = inventoryService.create_inventory(data, "items")
     return Response(json_util.dumps(response), status=201, mimetype="application/json")
 
 
-@inventory.route("/find", methods=["GET"])
+@inventory.route("/find", methods=["GET", "POST"])
 def get_find():
     data = request.get_json()
     response = inventoryService.find_inventory(data)
     return Response(json_util.dumps(response), status=200, mimetype="application/json")
 
 
-@inventory.route("/", methods=["GET"])
+@inventory.route("/", methods=["GET", "POST"])
 def get_all():
     page = request.args.get("page", 1, type=int)
-    limit = request.args.get("limit")
+    limit = request.args.get("limit", 8, type=int)
     filter = {}
     payload = {}
+    
     try:
         filter = request.get_json()
     except Exception as e:
@@ -44,10 +45,9 @@ def get_all():
     )
 
 
-@inventory.route("/getid", methods=["GET"])
-def get_by_id():
-    data = request.get_json()
-    response = inventoryService.get_inventory_by_id(data)
+@inventory.route("/<id>", methods=["GET"])
+def get_by_id(id):
+    response = inventoryService.get_inventory_by_id(id)
     return Response(
         response=json_util.dumps(response), status=200, mimetype="application/json"
     )
@@ -56,8 +56,7 @@ def get_by_id():
 @inventory.route("/update", methods=["PATCH"])
 def update():
     data = request.get_json()
-    response = inventoryService.update_inventory(data)
-    print(response)
+    response = inventoryService.update_inventory(data, "items")
     return Response(
         response=json_util.dumps(response), status=200, mimetype="application/json"
     )
