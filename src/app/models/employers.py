@@ -60,7 +60,7 @@ employers_validator = {
               "bsonType": "string",
               "description": "bairro do colaborador"
             },
-            "profile_image": {
+            "imageUser": {
               "bsonType": "string",
               "description": "Imagem de perfil do colaborador"
             },
