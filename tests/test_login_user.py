@@ -40,3 +40,19 @@ def test_login_user_with_invalid_email(client):
     assert response.status_code == 401
     assert response.json['error'] == "Suas credênciais estão incorretas!"
     assert response.json['status_code'] == 401
+
+
+def test_login_user_with_invalid_password(client):
+    data = {
+        "email": fake.email(),
+        "password": "12345678"
+    }
+    
+    client.post("users/create", data=json.dumps(data), headers=headers)
+
+    data['password'] = 'senhainvalida'
+    response = client.post("users/login", data=json.dumps(data), headers=headers)
+
+    assert response.status_code == 401
+    assert response.json['error'] == "Suas credênciais estão incorretas!"
+    assert response.json['status_code'] == 401
