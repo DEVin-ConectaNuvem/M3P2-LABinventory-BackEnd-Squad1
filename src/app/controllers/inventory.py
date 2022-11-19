@@ -23,12 +23,18 @@ def get_find():
 
 @inventory.route("/", methods=["GET"])
 def get_all():
-    page = request.args.get("page") or False
-    limit = request.args.get("limit") or False
+    page = request.args.get("page", 1, type=int)
+    limit = request.args.get("limit")
+    filter = {}
     payload = {}
+    try:
+        filter = request.get_json()
+    except Exception as e:
+        pass
+            
     if page and limit:
         payload = {
-            "filter": {},
+            "filter": filter,
             "skip": (int(page) - 1) * int(limit),
             "limit": int(limit),
         }
