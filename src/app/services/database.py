@@ -1,3 +1,4 @@
+from datetime import datetime
 from bson import ObjectId, json_util
 from src.app import mongo_client
 from src.app.utils import convert_id
@@ -23,6 +24,8 @@ class Database(object):
 
     def create(self, data):
         try:
+            data["createdAt"] = datetime.utcnow()
+            data["updatedAt"] = datetime.utcnow()
             response = mongo_client[self.collection].insert_one(data)
             result = {"id": str(response.inserted_id)}
 
@@ -32,8 +35,7 @@ class Database(object):
 
     def get_data_with_paginate(self, data):
         try:
-            print(data["filter"])
-            response = (
+            response = list(
                 mongo_client[self.collection]
                 .find(data["filter"])
                 .skip(data["skip"])
@@ -73,7 +75,7 @@ class Database(object):
     def get_by_id(self, id):
         try:
             response = mongo_client[self.collection].find_one(
-                {"_id": ObjectId(id["_id"])}
+                {"_id": ObjectId(id)}
             )
             response = self.format_return(response)
 
@@ -83,7 +85,9 @@ class Database(object):
 
     def update(self, data):
         try:
-            id = {"_id": ObjectId(data["_id"])}
+            id = {"_id": ObjectId(data["id"])}
+            data["dataset"]["updatedAt"] = datetime.utcnow()
+            
             data_set = {"$set": data["dataset"]}
             response = mongo_client[self.collection].update_one(id, data_set)
             if response.matched_count > 0:

@@ -3,7 +3,7 @@ items_validator = {
         "bsonType": "object",
         "required": [
             "_id",
-            "id",
+            "codPatrimonio",
             "title",
             "description",
             "category",
@@ -19,7 +19,7 @@ items_validator = {
                 "bsonType": "objectId",
                 "description": "Chave definida da collection",
             },
-            "id": {"bsonType": "string", "description": "Codigo de patrimonio do item"},
+            "codPatrimonio": {"bsonType": "string", "description": "Codigo de patrimonio do item"},
             "title": {"bsonType": "string", "description": "Titulo do item"},
             "category": {"bsonType": "string", "description": "Categoria do item"},
             "description": {"bsonType": "string", "description": "Descrição do item"},

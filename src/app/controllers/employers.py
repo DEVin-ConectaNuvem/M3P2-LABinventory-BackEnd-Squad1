@@ -10,7 +10,7 @@ employersService = employers_service.EmployersService()
 @employers.route("/create", methods=["POST"])
 def create():
     data = request.get_json()
-    response = employersService.create_employer(data, "employers", "teste")
+    response = employersService.create_employer(data, "employers")
     return Response(json_util.dumps(response), mimetype="application/json")
 
 
@@ -51,7 +51,7 @@ def get_by_id():
 def update():
     data = request.get_json()
     response = employersService.update_employer(data, "employers")
-    print(response)
+    
     return Response(
         response=json_util.dumps(response), status=200, mimetype="application/json"
     )
