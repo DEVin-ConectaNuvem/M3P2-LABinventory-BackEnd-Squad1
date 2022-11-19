@@ -14,14 +14,18 @@ class EmployersService:
     def create_employer(self, *args):
         try:
             object = args[0]
+            email = object["email"]
+            validate_email = self.db.get_one({"email": email})
+            if validate_email:
+                return {"error": "Email already exists", "status": 400}
+
             return self.db.create(object)
         except Exception as e:
-            # error_details = json.loads(e.error).errInfo
             return e
 
     def get_employers(self, payload=None):
         try:
-            if(payload):
+            if payload:
                 return self.db.get_data_with_paginate(payload)
             else:
                 res = self.db.get_all()
