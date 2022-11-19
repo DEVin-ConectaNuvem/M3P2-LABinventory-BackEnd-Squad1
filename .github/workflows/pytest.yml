@@ -37,4 +37,4 @@ jobs:
           poetry install -v
       - name: Executando testes
         run: |
-          pytest tests/ -v -W ignore::DeprecationWarning
+          python3 -m pytest tests/ -v -W ignore::DeprecationWarning
