@@ -134,6 +134,17 @@ python-versions = ">=3.7"
 test = ["pytest (>=6)"]
 
 [[package]]
+name = "faker"
+version = "15.3.2"
+description = "Faker is a Python package that generates fake data for you."
+category = "main"
+optional = false
+python-versions = ">=3.7"
+
+[package.dependencies]
+python-dateutil = ">=2.4"
+
+[[package]]
 name = "flasgger"
 version = "0.9.5"
 description = "Extract swagger specs from your flask project"
@@ -514,6 +525,17 @@ Werkzeug = ">=0.7"
 docs = ["Sphinx", "sphinx-rtd-theme"]
 
 [[package]]
+name = "python-dateutil"
+version = "2.8.2"
+description = "Extensions to the standard Python datetime module"
+category = "main"
+optional = false
+python-versions = "!=3.0.*,!=3.1.*,!=3.2.*,>=2.7"
+
+[package.dependencies]
+six = ">=1.5"
+
+[[package]]
 name = "python-dotenv"
 version = "0.21.0"
 description = "Read key-value pairs from a .env file and set them as environment variables"
@@ -642,7 +664,7 @@ testing = ["flake8 (<5)", "func-timeout", "jaraco.functools", "jaraco.itertools"
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.9"
-content-hash = "3354183dcba1a9312966d80790ff174e83727019c46ecfcc6287d20f8228c980"
+content-hash = "929ac3dd304636e8efa26c610ddc5eb398a1fb1277bfd091de6cd969452b0307"
 
 [metadata.files]
 attrs = [
@@ -774,6 +796,10 @@ dnspython = [
 exceptiongroup = [
     {file = "exceptiongroup-1.0.3-py3-none-any.whl", hash = "sha256:6002703c7d31fb9950ddc8780840f67880c440895dc1151dd551553aa1246e4a"},
     {file = "exceptiongroup-1.0.3.tar.gz", hash = "sha256:76cac74b5207c5997678a1c7105cb6f14213c9c63c096a38cfcb529d83ce5c02"},
+]
+faker = [
+    {file = "Faker-15.3.2-py3-none-any.whl", hash = "sha256:43da04aae745018e8bded768e74c84423d9dc38e4c498a53439e749d90e20bc0"},
+    {file = "Faker-15.3.2.tar.gz", hash = "sha256:0094fe3340ad73c490d3ffccc59cc171b161acfccccd52925c70970ba23e6d6b"},
 ]
 flasgger = [
     {file = "flasgger-0.9.5-py2.py3-none-any.whl", hash = "sha256:0603941cf4003626b4ee551ca87331f1d17b8eecce500ccf1a1f1d3a332fc94a"},
@@ -1058,6 +1084,10 @@ pytest-cov = [
 pytest-flask = [
     {file = "pytest-flask-1.2.0.tar.gz", hash = "sha256:46fde652f77777bf02dc91205aec4ce20cdf2acbbbd66a918ab91f5c14693d3d"},
     {file = "pytest_flask-1.2.0-py3-none-any.whl", hash = "sha256:fe25b39ad0db09c3d1fe728edecf97ced85e774c775db259a6d25f0270a4e7c9"},
+]
+python-dateutil = [
+    {file = "python-dateutil-2.8.2.tar.gz", hash = "sha256:0123cacc1627ae19ddf3c27a5de5bd67ee4586fbdd6440d9748f8abb483d3e86"},
+    {file = "python_dateutil-2.8.2-py2.py3-none-any.whl", hash = "sha256:961d03dc3453ebbc59dbdea9e4e11c5651520a876d0f4db161e8674aae935da9"},
 ]
 python-dotenv = [
     {file = "python-dotenv-0.21.0.tar.gz", hash = "sha256:b77d08274639e3d34145dfa6c7008e66df0f04b7be7a75fd0d5292c191d79045"},
