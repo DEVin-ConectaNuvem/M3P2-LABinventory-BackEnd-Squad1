@@ -1,0 +1,40 @@
+name: Testes do endpoint
+
+on:
+  push:
+    branches: [ feat/testes-login ]
+  pull_request:
+    branches: [ feat/testes-login  ]
+
+env:
+  DAY_OF_WEEK: Monday
+  FLASK_APP: app.py
+  FLASK_ENV: testing
+  SECRET_KEY: ALGUMSEGREDO
+  GOOGLE_CLIENT_ID: 77077858508-5831ve5va21absne1iutu8lllue9th46.apps.googleusercontent.com
+  OAUTHLIB_INSECURE_TRANSPORT: 1
+  BACKEND_URL: http://localhost:5000/
+  FRONTEND_URL: http://localhost:3000/
+  MONGO_URI: mongodb+srv://gpm3p3s1:jX%25%26DpG7dPZsTFw%24kDg6%26uR%26o%23%5Ezmg3C%23@conectanuvem.mkaa8lo.mongodb.net/db
+  MONGO_URI_TESTING: mongodb+srv://gpm3p3s1:jX%25%26DpG7dPZsTFw%24kDg6%26uR%26o%23%5Ezmg3C%23@conectanuvem.mkaa8lo.mongodb.net/test
+  
+jobs:
+  tests:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout projeto
+        uses: actions/checkout@v2
+
+      - name: Instalando python
+      - uses: actions/setup-python@v4
+        with:
+          python-version: '3.10' 
+      - stage: Instalando poetry
+        run: |
+          python -m pip install --upgrade pip
+          pip install poetry
+          poetry install -v
+      - name: Executando testes
+        run: |
+          pytest tests/ -v -W ignore::DeprecationWarning

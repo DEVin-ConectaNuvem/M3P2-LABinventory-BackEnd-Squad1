@@ -14,7 +14,6 @@ _build
 .python-version
 .vscode/*
 
-src/app/database
 .venv
 /releases/*
 pip-wheel-metadata
