@@ -23,3 +23,15 @@ def test_successfully_create_user(client):
 
 		assert response.status_code == 201
 		assert response.json['message'] == "Usuário foi criado com sucesso."
+  
+  
+
+def test_create_user_missing_fields(client):
+		data = {
+			"email": fake.email()
+		}
+
+		response = client.post("users/create", data=json.dumps(data), headers=headers)
+
+		assert response.status_code == 400
+		assert response.json['error'] == "Está faltando o item ['password']"
