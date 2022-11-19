@@ -2,9 +2,9 @@ name: Testes do endpoint
 
 on:
   push:
-    branches: [ feat/testes-login ]
+    branches: [ feat/ci-cd ]
   pull_request:
-    branches: [ feat/testes-login  ]
+    branches: [ feat/ci-cd ]
     
 env:
   DAY_OF_WEEK: Monday
