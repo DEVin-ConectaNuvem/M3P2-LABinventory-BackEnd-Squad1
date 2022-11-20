@@ -14,8 +14,9 @@ convertTypes = {
     "int": int,
     "double": float,
     "bool": bool,
-    "array": list,
+    "list": list,
     "dict": dict,
+    "null": type(None),
 }
 
 
@@ -39,7 +40,14 @@ def decorator_validate_types(f):
                 continue
             elif key == "dataset":
                 for key in object["dataset"]:
-                    if (
+                    if type(validate["$jsonSchema"]["properties"][key]["bsonType"]) == list:
+                        validate_list = False
+                        for bsonType in validate["$jsonSchema"]["properties"][key]["bsonType"]:
+                            if type(object["dataset"][key]) == convertTypes[bsonType]:
+                                validate_list = True
+                        if validate_list == False:
+                            return {"error": f"O tipo do item {key} não é válido", "status": 400}
+                    elif (
                         type(object["dataset"][key])
                         == convertTypes[
                             validate["$jsonSchema"]["properties"][key]["bsonType"]
