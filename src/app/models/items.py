@@ -10,7 +10,6 @@ items_validator = {
             "value",
             "brand",
             "model",
-            "collaborator",
             "createdAt",
             "updatedAt",
         ],
@@ -19,7 +18,10 @@ items_validator = {
                 "bsonType": "objectId",
                 "description": "Chave definida da collection",
             },
-            "codPatrimonio": {"bsonType": "string", "description": "Codigo de patrimonio do item"},
+            "codPatrimonio": {
+                "bsonType": "string",
+                "description": "Codigo de patrimonio do item",
+            },
             "title": {"bsonType": "string", "description": "Titulo do item"},
             "category": {"bsonType": "string", "description": "Categoria do item"},
             "description": {"bsonType": "string", "description": "Descrição do item"},
@@ -31,7 +33,7 @@ items_validator = {
             "brand": {"bsonType": "string", "description": "Marca do item"},
             "model": {"bsonType": "string", "description": "Modelo do item"},
             "collaborator": {
-                "bsonType": "string",
+                "bsonType": ["string", "null"],
                 "description": "Colaborador que está com o item",
             },
             "url": {"bsonType": "string", "description": "URL da imagem"},
