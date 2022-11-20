@@ -23,19 +23,13 @@ class Employees_Service:
         except Exception as e:
             return e
 
-    def get_employees(self, payload=None):
+    def get_employees(self, req_args=None):
         try:
-            if payload:
-                return self.db.get_data_with_paginate(payload)
+            if req_args:
+                return self.db.get_data_with_paginate(req_args)
             else:
                 res = self.db.get_all()
                 return res
-        except Exception as e:
-            return e
-
-    def get_employee(self, data):
-        try:
-            return self.db.get_one(data)
         except Exception as e:
             return e
 
@@ -50,13 +44,20 @@ class Employees_Service:
     def update_employee(self, *args):
         try:
             data = args[0]
+            if "email" in data["dataset"]:
+                email_initial = self.db.get_by_id(data["id"])["email"]
+                email = data["dataset"]["email"]
+                if email_initial != email:
+                    exists_cod = self.db.get_one({"email": email})
+                    if exists_cod:
+                        return {"error": "email already exists", "status": 400}
+
             return self.db.update(data)
         except Exception as e:
             return e
 
-    def delete_employee(self, *args):
+    def delete_employee(self, employee_id):
         try:
-            data = args[0]
-            return self.db.delete(data)
+            return self.db.delete(employee_id)
         except Exception as e:
             return e

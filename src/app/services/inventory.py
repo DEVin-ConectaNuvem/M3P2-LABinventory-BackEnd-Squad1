@@ -27,7 +27,6 @@ class inventoryService:
 
             return self.db.create(data)
         except Exception as e:
-            print(e, "e")
             return e
 
     def get_inventory(self, req_args=None):
@@ -84,7 +83,6 @@ class inventoryService:
 
             return self.db.update(data)
         except Exception as e:
-            print(e, "e")
             return e
 
     def delete_inventory(self, inventory_id):

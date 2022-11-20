@@ -35,9 +35,7 @@ def decorator_validate_types(f):
         object = args[1]
         collection = args[2]
         validate = validators_source[collection]
-        print(object, "object")
         for key in object:
-            print(key, "key")
             if key == "_id" or key == "id":
                 continue
             elif (

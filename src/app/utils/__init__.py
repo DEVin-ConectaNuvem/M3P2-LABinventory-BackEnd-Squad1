@@ -38,5 +38,4 @@ def convert_id(object):
 
         return object
     except Exception as e:
-        print(e, "e")
         pass

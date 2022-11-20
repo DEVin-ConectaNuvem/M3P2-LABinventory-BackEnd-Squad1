@@ -62,7 +62,7 @@ employees_validator = {
                 "description": "bairro do colaborador",
             },
             "imageUser": {
-                "bsonType": "string",
+                "bsonType": ["string", "null"],
                 "description": "Imagem de perfil do colaborador",
             },
             "complement": {
@@ -73,6 +73,14 @@ employees_validator = {
                 "bsonType": "string",
                 "description": "Ponto de referencia do colaborador",
             },
+            "createdAt": {
+                "bsonType": "date",
+                "description": "Data da criação do item",
+            },
+            "updatedAt": {
+                "bsonType": "date",
+                "description": "Data da última atualização",
+            }
         },
     }
 }
