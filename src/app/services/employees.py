@@ -5,13 +5,13 @@ from src.app.validators import (
 from .database import Database
 
 
-class EmployersService:
+class Employees_Service:
     def __init__(self):
-        self.db = Database("employers")
+        self.db = Database("employees")
 
     @decorator_validate_types
     @decorator_validate_required_keys
-    def create_employer(self, *args):
+    def create_employee(self, *args):
         try:
             object = args[0]
             email = object["email"]
@@ -23,7 +23,7 @@ class EmployersService:
         except Exception as e:
             return e
 
-    def get_employers(self, payload=None):
+    def get_employees(self, payload=None):
         try:
             if payload:
                 return self.db.get_data_with_paginate(payload)
@@ -33,28 +33,28 @@ class EmployersService:
         except Exception as e:
             return e
 
-    def get_employer(self, data):
+    def get_employee(self, data):
         try:
             return self.db.get_one(data)
         except Exception as e:
             return e
 
-    def get_employer_by_id(self, employer_id):
+    def get_employee_by_id(self, employee_id):
         try:
-            return self.db.get_by_id(employer_id)
+            return self.db.get_by_id(employee_id)
         except Exception as e:
             return e
 
     @decorator_validate_types
     @decorator_validate_required_keys
-    def update_employer(self, *args):
+    def update_employee(self, *args):
         try:
             data = args[0]
             return self.db.update(data)
         except Exception as e:
             return e
 
-    def delete_employer(self, *args):
+    def delete_employee(self, *args):
         try:
             data = args[0]
             return self.db.delete(data)

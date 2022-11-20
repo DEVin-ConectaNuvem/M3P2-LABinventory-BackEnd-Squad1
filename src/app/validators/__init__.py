@@ -1,10 +1,10 @@
 from src.app.models.items import items_validator
-from src.app.models.employers import employers_validator
+from src.app.models.employees import employees_validator
 from src.app.models.users import users_validator
 
 validators_source = {
     "items": items_validator,
-    "employers": employers_validator,
+    "employees": employees_validator,
     "users": users_validator,
 }
 
@@ -16,7 +16,7 @@ convertTypes = {
     "bool": [bool],
     "list": [list],
     "dict": [dict],
-    "null": [type(None)]
+    "null": [type(None)],
 }
 
 
@@ -35,27 +35,41 @@ def decorator_validate_types(f):
         object = args[1]
         collection = args[2]
         validate = validators_source[collection]
-        print(object, 'object')
+        print(object, "object")
         for key in object:
-            print(key, 'key')
+            print(key, "key")
             if key == "_id" or key == "id":
                 continue
-            elif key != "dataset" and type(validate["$jsonSchema"]["properties"][key]["bsonType"]) == list:
-                        validate_list = False
-                        for bsonType in validate["$jsonSchema"]["properties"][key]["bsonType"]:
-                            if type(object[key]) in convertTypes[bsonType]:
-                                validate_list = True
-                        if validate_list == False:
-                            return {"error": f"O tipo do item {key} não é válido", "status": 400}
+            elif (
+                key != "dataset"
+                and type(validate["$jsonSchema"]["properties"][key]["bsonType"]) == list
+            ):
+                validate_list = False
+                for bsonType in validate["$jsonSchema"]["properties"][key]["bsonType"]:
+                    if type(object[key]) in convertTypes[bsonType]:
+                        validate_list = True
+                if validate_list == False:
+                    return {
+                        "error": f"O tipo do item {key} não é válido",
+                        "status": 400,
+                    }
             elif key == "dataset":
                 for key in object["dataset"]:
-                    if type(validate["$jsonSchema"]["properties"][key]["bsonType"]) == list:
+                    if (
+                        type(validate["$jsonSchema"]["properties"][key]["bsonType"])
+                        == list
+                    ):
                         validate_list = False
-                        for bsonType in validate["$jsonSchema"]["properties"][key]["bsonType"]:
+                        for bsonType in validate["$jsonSchema"]["properties"][key][
+                            "bsonType"
+                        ]:
                             if type(object["dataset"][key]) in convertTypes[bsonType]:
                                 validate_list = True
                         if validate_list == False:
-                            return {"error": f"O tipo do item {key} não é válido", "status": 400}
+                            return {
+                                "error": f"O tipo do item {key} não é válido",
+                                "status": 400,
+                            }
                     elif (
                         type(object["dataset"][key])
                         in convertTypes[

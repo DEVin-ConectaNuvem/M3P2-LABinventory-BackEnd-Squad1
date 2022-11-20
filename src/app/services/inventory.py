@@ -27,7 +27,7 @@ class inventoryService:
 
             return self.db.create(data)
         except Exception as e:
-            print(e, 'e')
+            print(e, "e")
             return e
 
     def get_inventory(self, req_args=None):
@@ -48,10 +48,10 @@ class inventoryService:
 
     def get_inventory_list(self, req_args=None):
         try:
-            all_employers = list(
-                mongo_client["employers"].find({}, {"name": 1, "_id": 1})
+            all_employees = list(
+                mongo_client["employees"].find({}, {"name": 1, "_id": 1})
             )
-            list_employers_formated = Database.format_return(all_employers)
+            list_employees_formated = Database.format_return(all_employees)
             all_items = []
 
             if req_args:
@@ -62,30 +62,29 @@ class inventoryService:
             result = {
                 "rows": all_items["rows"],
                 "totalRows": all_items["totalRows"],
-                "employers": list_employers_formated,
+                "employees": list_employees_formated,
             }
 
             return result
         except Exception as e:
             return e
 
-
     @decorator_validate_types
     @decorator_validate_required_keys
     def update_inventory(self, *args):
         try:
             data = args[0]
-            if "codPatrimonio" in data["dataset"]:    
+            if "codPatrimonio" in data["dataset"]:
                 cod_patrimonio_initial = self.db.get_by_id(data["id"])["codPatrimonio"]
                 cod_patrimonio = data["dataset"]["codPatrimonio"]
                 if cod_patrimonio_initial != cod_patrimonio:
                     exists_cod = self.db.get_one({"codPatrimonio": cod_patrimonio})
                     if exists_cod:
                         return {"error": "codPatrimonio already exists", "status": 400}
-                    
+
             return self.db.update(data)
         except Exception as e:
-            print(e, 'e')
+            print(e, "e")
             return e
 
     def delete_inventory(self, inventory_id):
@@ -103,7 +102,7 @@ class inventoryService:
             total_borrowed = mongo_client[self.collection].aggregate(
                 [{"$match": {"collaborator": {"$ne": None}}}, {"$count": "borrowed"}]
             )
-            total_collabs = mongo_client["employers"].count_documents({})
+            total_collabs = mongo_client["employees"].count_documents({})
 
             json_total_value_items = json_util.dumps(total_value_items)
             json_total_items = json_util.dumps(total_items)

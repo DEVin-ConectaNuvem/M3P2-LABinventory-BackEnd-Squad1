@@ -1,27 +1,27 @@
-from src.app.services import employers as employers_service
+from src.app.services import employees as employees_service
 from flask import Blueprint, request
 from flask.wrappers import Response
 from bson import json_util
 
-employers = Blueprint("employers", __name__, url_prefix="/employers")
-employersService = employers_service.EmployersService()
+employees = Blueprint("employees", __name__, url_prefix="/employees")
+employee_service = employees_service.Employees_Service()
 
 
-@employers.route("/create", methods=["POST"])
+@employees.route("/create", methods=["POST"])
 def create():
     data = request.get_json()
-    response = employersService.create_employer(data, "employers")
+    response = employee_service.create_employee(data, "employees")
     return Response(json_util.dumps(response), mimetype="application/json")
 
 
-@employers.route("/find", methods=["GET"])
+@employees.route("/find", methods=["GET"])
 def get_find():
     data = request.get_json()
-    response = employersService.get_employer(data)
+    response = employee_service.get_employee(data)
     return Response(json_util.dumps(response), status=200, mimetype="application/json")
 
 
-@employers.route("/", methods=["GET"])
+@employees.route("/", methods=["GET"])
 def get_all():
     page = request.args.get("page") or False
     limit = request.args.get("limit") or False
@@ -32,35 +32,35 @@ def get_all():
             "skip": (int(page) - 1) * int(limit),
             "limit": int(limit),
         }
-    response = employersService.get_employers(payload)
+    response = employee_service.get_employees(payload)
     return Response(
         response=json_util.dumps(response), status=200, mimetype="application/json"
     )
 
 
-@employers.route("/getid", methods=["GET"])
+@employees.route("/getid", methods=["GET"])
 def get_by_id():
     data = request.get_json()
-    response = employersService.get_employer_by_id(data)
+    response = employee_service.get_employee_by_id(data)
     return Response(
         response=json_util.dumps(response), status=200, mimetype="application/json"
     )
 
 
-@employers.route("/update", methods=["PATCH"])
+@employees.route("/update", methods=["PATCH"])
 def update():
     data = request.get_json()
-    response = employersService.update_employer(data, "employers")
-    
+    response = employee_service.update_employee(data, "employees")
+
     return Response(
         response=json_util.dumps(response), status=200, mimetype="application/json"
     )
 
 
-@employers.route("/delete", methods=["DELETE"])
+@employees.route("/delete", methods=["DELETE"])
 def delete():
     data = request.get_json()
-    response = employersService.delete_employer(data, "employers")
+    response = employee_service.delete_employee(data, "employees")
     return Response(
         response=json_util.dumps(response), status=200, mimetype="application/json"
     )
