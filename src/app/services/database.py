@@ -10,10 +10,11 @@ class Database(object):
     def __init__(self, collection):
         self.collection = collection
 
-    def format_return(self, response):
+    @staticmethod
+    def format_return( response):
         list_response = []
-
-        if type(response) == list:
+        
+        if isinstance(response, list):
             for item in response:
                 item = convert_id(item)
                 list_response.append(item)
@@ -42,8 +43,13 @@ class Database(object):
                 .limit(data["limit"])
             )
             response = self.format_return(response)
+            
+            result = {
+                "rows": response,
+                "totalRows": self.count(data["filter"])
+            }
 
-            return response
+            return result
         except Exception as e:
             return {"error": str(e)}
 
@@ -67,8 +73,12 @@ class Database(object):
         try:
             response = list(mongo_client[self.collection].find())
             response = self.format_return(response)
+            result = {
+                "data": response,
+                "totalRows": self.count({})
+            }
 
-            return response
+            return result
         except Exception as e:
             return {"error": str(e)}
 
@@ -110,8 +120,6 @@ class Database(object):
     def count(self, data):
         try:
             response = mongo_client[self.collection].count_documents(data)
-            response = self.format_return(response)
-
             return response
         except Exception as e:
             return {"error": str(e)}

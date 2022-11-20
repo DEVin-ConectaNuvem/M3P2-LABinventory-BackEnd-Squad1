@@ -14,30 +14,20 @@ def create():
     return Response(json_util.dumps(response), status=201, mimetype="application/json")
 
 
-@inventory.route("/find", methods=["GET", "POST"])
-def get_find():
-    data = request.get_json()
-    response = inventoryService.find_inventory(data)
-    return Response(json_util.dumps(response), status=200, mimetype="application/json")
-
-
-@inventory.route("/", methods=["GET", "POST"])
+@inventory.route("/", methods=["GET"])
 def get_all():
     page = request.args.get("page", 1, type=int)
     limit = request.args.get("limit", 8, type=int)
-    filter = {}
+    searchField = request.args.get("searchField", None, type=str)
+    searchValue = request.args.get("searchValue", None, type=str)
+    operator = request.args.get("operator", None, type=str)
     payload = {}
-    
-    try:
-        filter = request.get_json()
-    except Exception as e:
-        pass
-            
     if page and limit:
         payload = {
-            "filter": filter,
-            "skip": (int(page) - 1) * int(limit),
-            "limit": int(limit),
+            "filter": {searchField: searchValue} if searchField else {},
+            "operator": operator,
+            "skip": (page - 1) * (limit),
+            "limit": limit,
         }
     response = inventoryService.get_inventory(payload)
     return Response(
@@ -48,6 +38,26 @@ def get_all():
 @inventory.route("/<id>", methods=["GET"])
 def get_by_id(id):
     response = inventoryService.get_inventory_by_id(id)
+    return Response(
+        response=json_util.dumps(response), status=200, mimetype="application/json"
+    )
+
+@inventory.route("/list", methods=["GET"])
+def list():
+    page = request.args.get("page", 1, type=int)
+    limit = request.args.get("limit", 8, type=int)
+    searchField = request.args.get("searchField", None, type=str)
+    searchValue = request.args.get("searchValue", None, type=str)
+    operator = request.args.get("operator", None, type=str)
+    payload = {}
+    if page and limit:
+        payload = {
+            "filter": {searchField: searchValue} if searchField else {},
+            "operator": operator,
+            "skip": (page - 1) * (limit),
+            "limit": limit,
+        }
+    response = inventoryService.get_inventory_list(payload)
     return Response(
         response=json_util.dumps(response), status=200, mimetype="application/json"
     )
@@ -69,11 +79,10 @@ def delete():
         response=json_util.dumps(response), status=200, mimetype="application/json"
     )
 
+
 @inventory.route("/analytics", methods=["GET"])
 def get_analytics():
     response = inventoryService.get_analytics()
     return Response(
-        response=json.dumps(response),
-        status=200,
-        mimetype="application/json"
+        response=json.dumps(response), status=200, mimetype="application/json"
     )
