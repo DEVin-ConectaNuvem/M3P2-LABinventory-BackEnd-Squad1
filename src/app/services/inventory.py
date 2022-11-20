@@ -27,22 +27,15 @@ class inventoryService:
 
             return self.db.create(data)
         except Exception as e:
-
             return e
 
-    def get_inventory(self, payload=None):
+    def get_inventory(self, req_args=None):
         try:
-            if payload:
-                return self.db.get_data_with_paginate(payload)
+            if req_args:
+                return self.db.get_data_with_paginate(req_args)
             else:
                 res = self.db.get_all()
                 return res
-        except Exception as e:
-            return e
-
-    def find_inventory(self, data):
-        try:
-            return self.db.get_one(data)
         except Exception as e:
             return e
 
@@ -52,20 +45,46 @@ class inventoryService:
         except Exception as e:
             return e
 
+    def get_inventory_list(self, req_args=None):
+        try:
+            all_employers = list(
+                mongo_client["employers"].find({}, {"name": 1, "_id": 1})
+            )
+            list_employers_formated = Database.format_return(all_employers)
+            all_items = []
+
+            if req_args:
+                all_items = self.db.get_data_with_paginate(req_args)
+            else:
+                all_items = self.db.get_all()
+
+            result = {
+                "rows": all_items["rows"],
+                "totalRows": all_items["totalRows"],
+                "employers": list_employers_formated,
+            }
+
+            return result
+        except Exception as e:
+            return e
+
+
     @decorator_validate_types
     @decorator_validate_required_keys
     def update_inventory(self, *args):
         try:
             data = args[0]
-            cod_patrimonio_initial = self.db.get_by_id(data["id"])["codPatrimonio"]
-            cod_patrimonio = data["dataset"]["codPatrimonio"]
-            if cod_patrimonio_initial != cod_patrimonio:
-                exists_cod = self.db.get_one({"codPatrimonio": cod_patrimonio})
-                if exists_cod:
-                    return {"error": "codPatrimonio already exists", "status": 400}
-
+            if "codPatrimonio" in data["dataset"]:    
+                cod_patrimonio_initial = self.db.get_by_id(data["id"])["codPatrimonio"]
+                cod_patrimonio = data["dataset"]["codPatrimonio"]
+                if cod_patrimonio_initial != cod_patrimonio:
+                    exists_cod = self.db.get_one({"codPatrimonio": cod_patrimonio})
+                    if exists_cod:
+                        return {"error": "codPatrimonio already exists", "status": 400}
+                    
             return self.db.update(data)
         except Exception as e:
+            print(e, 'e')
             return e
 
     def delete_inventory(self, inventory_id):
