@@ -9,9 +9,7 @@ items_validator = {
             "category",
             "value",
             "brand",
-            "model",
-            "createdAt",
-            "updatedAt",
+            "model"
         ],
         "properties": {
             "_id": {
@@ -26,7 +24,7 @@ items_validator = {
             "category": {"bsonType": "string", "description": "Categoria do item"},
             "description": {"bsonType": "string", "description": "Descrição do item"},
             "value": {
-                "bsonType": "double",
+                "bsonType": ["double", "int"],
                 "minimum": 0,
                 "description": "Valor do item",
             },

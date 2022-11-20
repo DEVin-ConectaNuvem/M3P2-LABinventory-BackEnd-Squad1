@@ -32,6 +32,7 @@ class Database(object):
 
             return result
         except Exception as e:
+            print(e, 'error')
             return {"error": str(e)}
 
     def get_data_with_paginate(self, data):

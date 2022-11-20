@@ -9,14 +9,14 @@ validators_source = {
 }
 
 convertTypes = {
-    "string": str,
-    "objectId": str,
-    "int": int,
-    "double": float,
-    "bool": bool,
-    "list": list,
-    "dict": dict,
-    "null": type(None),
+    "string": [str],
+    "objectId": [str],
+    "int": [int],
+    "double": [int, float],
+    "bool": [bool],
+    "list": [list],
+    "dict": [dict],
+    "null": [type(None)]
 }
 
 
@@ -35,21 +35,30 @@ def decorator_validate_types(f):
         object = args[1]
         collection = args[2]
         validate = validators_source[collection]
+        print(object, 'object')
         for key in object:
+            print(key, 'key')
             if key == "_id" or key == "id":
                 continue
+            elif key != "dataset" and type(validate["$jsonSchema"]["properties"][key]["bsonType"]) == list:
+                        validate_list = False
+                        for bsonType in validate["$jsonSchema"]["properties"][key]["bsonType"]:
+                            if type(object[key]) in convertTypes[bsonType]:
+                                validate_list = True
+                        if validate_list == False:
+                            return {"error": f"O tipo do item {key} não é válido", "status": 400}
             elif key == "dataset":
                 for key in object["dataset"]:
                     if type(validate["$jsonSchema"]["properties"][key]["bsonType"]) == list:
                         validate_list = False
                         for bsonType in validate["$jsonSchema"]["properties"][key]["bsonType"]:
-                            if type(object["dataset"][key]) == convertTypes[bsonType]:
+                            if type(object["dataset"][key]) in convertTypes[bsonType]:
                                 validate_list = True
                         if validate_list == False:
                             return {"error": f"O tipo do item {key} não é válido", "status": 400}
                     elif (
                         type(object["dataset"][key])
-                        == convertTypes[
+                        in convertTypes[
                             validate["$jsonSchema"]["properties"][key]["bsonType"]
                         ]
                     ) == False:
@@ -58,7 +67,7 @@ def decorator_validate_types(f):
                         }
             elif (
                 type(object[key])
-                == convertTypes[validate["$jsonSchema"]["properties"][key]["bsonType"]]
+                in convertTypes[validate["$jsonSchema"]["properties"][key]["bsonType"]]
             ) == False:
                 return {"error": f"O tipo do item {key} não é o mesmo da collection"}
         return f(*args, **kwargs)

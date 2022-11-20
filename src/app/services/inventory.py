@@ -27,6 +27,7 @@ class inventoryService:
 
             return self.db.create(data)
         except Exception as e:
+            print(e, 'e')
             return e
 
     def get_inventory(self, req_args=None):
