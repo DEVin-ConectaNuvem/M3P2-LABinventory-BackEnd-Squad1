@@ -9,7 +9,7 @@ items_validator = {
             "category",
             "value",
             "brand",
-            "model"
+            "model",
         ],
         "properties": {
             "_id": {
@@ -34,7 +34,7 @@ items_validator = {
                 "bsonType": ["string", "null"],
                 "description": "Colaborador que está com o item",
             },
-            "url": {"bsonType": "string", "description": "URL da imagem"},
+            "url": {"bsonType": ["string", "null"], "description": "URL da imagem"},
             "createdAt": {
                 "bsonType": "date",
                 "description": "Data da criação do item",

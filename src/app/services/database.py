@@ -100,10 +100,16 @@ class Database(object):
             
             data_set = {"$set": data["dataset"]}
             response = mongo_client[self.collection].update_one(id, data_set)
+            print(response.matched_count, 'response')
             if response.matched_count > 0:
                 return {
-                    "message": "Data updated successfully",
+                    "message": "Dados atualizados com sucesso",
                     "status": 200,
+                }
+            elif response.matched_count == 0:
+                return {
+                    "error": "Id não encontrado",
+                    "status": 404,
                 }
         except Exception as e:
             return {"error": str(e)}

@@ -25,7 +25,7 @@ employees_validator = {
             },
             "name": {
                 "bsonType": "string",
-                "pattern": "^[a-zA-Z ]{3,99}$",
+                "pattern": "^[a-zA-Z0-9 ]{3,99}$",
                 "description": "Nome do colaborador",
             },
             "birthDay": {"bsonType": "string", "description": "Idade do colaborador"},
