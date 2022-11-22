@@ -45,4 +45,3 @@ def test_create_employer_invalid_cpf_format(employee):
 
     assert response.status_code == 400
     assert response.json['error'] == "Formato de CEP inválido!"
-    
