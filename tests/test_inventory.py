@@ -30,23 +30,3 @@ def test_create_inventory_sucess(inventory):
     response = inventory.post("inventory/create", data=json.dumps(data), headers=headers)
 
     assert response.status_code == 201
-    
-def test_create_employer_invalid_cpf_format(inventory):
-    data = {
-        "_id": fake._id(), 
-        "codPatrimonio": fake.name(), 
-        "title": fake.birthDay(), 
-        "description": fake.email(), 
-        "category": fake.phone(), 
-        "value": fake.gender(), 
-        "brand": 1235, 
-        "model": fake.city(), 
-        "collaborator": fake.state(), 
-        "createdAt": fake.street(), 
-        "updatedAt": fake.houseNumber(), 
-    }
-    
-    response = inventory.post("inventory/create", data=json.dumps(data), headers=headers)
-
-    assert response.status_code == 400
-    assert response.json['error'] == "Formato de CEP inválido!"
