@@ -1,3 +1,4 @@
+import json
 from src.app.models.items import items_validator
 from src.app.models.employees import employees_validator
 from src.app.models.users import users_validator
@@ -75,13 +76,17 @@ def decorator_validate_types(f):
                         ]
                     ) == False:
                         return {
-                            "error": f"O tipo do item {key} não é o mesmo da collection"
+                            "error": f"O tipo do item {key} não é o mesmo da collection",
+                            "status": 400,
                         }
             elif (
                 type(object[key])
                 in convertTypes[validate["$jsonSchema"]["properties"][key]["bsonType"]]
             ) == False:
-                return {"error": f"O tipo do item {key} não é o mesmo da collection"}
+                return {
+                    "error": f"O tipo do item {key} não é o mesmo da collection",
+                    "status": 400,
+                }
         return f(*args, **kwargs)
 
     return types_and_keys
@@ -100,3 +105,10 @@ def decorator_validate_required_keys(f):
         return f(*args, **kwargs)
 
     return valida_required_keys
+
+
+def adjust_errors_from_mongoschema(error):
+    if 'Document failed validation, full error' in error['error']:
+        return {'error': "Erro em validação - Contate o suporte", 'status': 400}
+    
+    return error

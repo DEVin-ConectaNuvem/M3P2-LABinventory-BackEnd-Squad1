@@ -1,3 +1,4 @@
+from flask import jsonify
 from src.app.validators import (
     decorator_validate_types,
     decorator_validate_required_keys,
@@ -17,11 +18,11 @@ class Employees_Service:
             email = object["email"]
             validate_email = self.db.get_one({"email": email})
             if validate_email:
-                return {"error": "Email already exists", "status": 400}
+                return {"error": "Email informado já possui cadastro", "status": 400}
 
             return self.db.create(object)
         except Exception as e:
-            return e
+            return jsonify({"error": str(e)}), 400
 
     def get_employees(self, req_args=None):
         try:
@@ -50,7 +51,7 @@ class Employees_Service:
                 if email_initial != email:
                     exists_cod = self.db.get_one({"email": email})
                     if exists_cod:
-                        return {"error": "email already exists", "status": 400}
+                        return {"error": "Email informado já possui cadastro", "status": 400}
 
             return self.db.update(data)
         except Exception as e:
