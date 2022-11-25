@@ -46,3 +46,6 @@ jobs:
 
       - name: Install depedencies
         run: poetry install --no-interaction --no-root
+
+      - name: Run testes
+        run: pytest tests/ -v -W ignore::DeprecationWarning  
