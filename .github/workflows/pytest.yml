@@ -39,11 +39,11 @@ jobs:
           poetry-version: ${{ matrix.poetry-version }}
 
       - name: View poetry --help
-        run: poetry --help
+        run: poetry install
 
-      - name: Install dependencies
-        if: steps.cached-poetry-dependencies.outputs.cache-hit != 'true'
-        run: poetry install --no-interaction --no-root
+      # - name: Install dependencies
+      #   if: steps.cached-poetry-dependencies.outputs.cache-hit != 'true'
+      #   run: poetry install --no-interaction --no-root
 
       
       # - name: Run tests
