@@ -2,9 +2,9 @@ name: Testes do endpoint
 
 on:
   push:
-    branches: [ feat/ci-cd ]
+    branches: [ development, main ]
   pull_request:
-    branches: [ feat/ci-cd ]
+    branches: [ development, main ]
     
 env:
   DAY_OF_WEEK: ${{ secrets.DAY_OF_WEEK }}
@@ -19,6 +19,22 @@ env:
   MONGO_URI_TESTING: ${{ secrets.MONGO_URI_TESTING }}
   
 jobs:
+  linting:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-python@v4
+      - uses: actions/cache@v3
+        with:
+          path: ~/.cache/pip
+          key: ${{ runner.os }}-pip
+          restore-keys: ${{ runner.os }}-pip
+      - run: python -m pip install black flake8 isort
+      - run: |
+          flake8 .
+          black . --check
+          isort .
+
   test:
     runs-on: ubuntu-latest
     steps:
