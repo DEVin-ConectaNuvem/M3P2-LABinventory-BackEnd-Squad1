@@ -1,6 +1,7 @@
 import json
-from src.app.models.items import items_validator
+
 from src.app.models.employees import employees_validator
+from src.app.models.items import items_validator
 from src.app.models.users import users_validator
 
 validators_source = {
@@ -108,7 +109,7 @@ def decorator_validate_required_keys(f):
 
 
 def adjust_errors_from_mongoschema(error):
-    if 'Document failed validation, full error' in error['error']:
-        return {'error': "Erro em validação - Contate o suporte", 'status': 400}
-    
+    if "Document failed validation, full error" in error["error"]:
+        return {"error": "Erro em validação - Contate o suporte", "status": 400}
+
     return error

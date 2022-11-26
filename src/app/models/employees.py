@@ -80,7 +80,7 @@ employees_validator = {
             "updatedAt": {
                 "bsonType": "date",
                 "description": "Data da última atualização",
-            }
+            },
         },
     }
 }

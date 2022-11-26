@@ -1,7 +1,8 @@
 from flask import Flask
-from src.app.controllers.user import users
+
 from src.app.controllers.employees import employees
 from src.app.controllers.inventory import inventory
+from src.app.controllers.user import users
 
 
 def routes(app: Flask):

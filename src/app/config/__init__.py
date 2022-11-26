@@ -4,6 +4,7 @@ from dotenv import find_dotenv, load_dotenv
 
 load_dotenv(find_dotenv())
 
+
 class Development(object):
     DEBUG = True
     TESTING = False

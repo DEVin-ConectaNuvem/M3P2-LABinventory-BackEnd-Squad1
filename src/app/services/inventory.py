@@ -1,15 +1,17 @@
-from datetime import datetime
 import json
+
 from bson import json_util
-from .database import Database
-from src.app.validators import (
-    decorator_validate_types,
-    decorator_validate_required_keys,
-)
+
 from src.app import mongo_client
+from src.app.validators import (
+    decorator_validate_required_keys,
+    decorator_validate_types,
+)
+
+from .database import Database
 
 
-class inventoryService:
+class Inventory_Service:
     def __init__(self):
         self.db = Database("items")
         self.collection = "items"

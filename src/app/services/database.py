@@ -1,9 +1,10 @@
+import re
 from datetime import datetime
-from bson import ObjectId, json_util
+
+from bson import ObjectId
+
 from src.app import mongo_client
 from src.app.utils import convert_id
-
-import re
 
 
 class Database(object):
@@ -11,9 +12,9 @@ class Database(object):
         self.collection = collection
 
     @staticmethod
-    def format_return( response):
+    def format_return(response):
         list_response = []
-        
+
         if isinstance(response, list):
             for item in response:
                 item = convert_id(item)
@@ -43,11 +44,8 @@ class Database(object):
                 .limit(data["limit"])
             )
             response = self.format_return(response)
-            
-            result = {
-                "rows": response,
-                "totalRows": self.count(data["filter"])
-            }
+
+            result = {"rows": response, "totalRows": self.count(data["filter"])}
 
             return result
         except Exception as e:
@@ -73,10 +71,7 @@ class Database(object):
         try:
             response = list(mongo_client[self.collection].find())
             response = self.format_return(response)
-            result = {
-                "data": response,
-                "totalRows": self.count({})
-            }
+            result = {"data": response, "totalRows": self.count({})}
 
             return result
         except Exception as e:
@@ -84,9 +79,7 @@ class Database(object):
 
     def get_by_id(self, id):
         try:
-            response = mongo_client[self.collection].find_one(
-                {"_id": ObjectId(id)}
-            )
+            response = mongo_client[self.collection].find_one({"_id": ObjectId(id)})
             response = self.format_return(response)
 
             return response
@@ -97,10 +90,10 @@ class Database(object):
         try:
             id = {"_id": ObjectId(data["id"])}
             data["dataset"]["updatedAt"] = datetime.utcnow()
-            
+
             data_set = {"$set": data["dataset"]}
             response = mongo_client[self.collection].update_one(id, data_set)
-            print(response.matched_count, 'response')
+            print(response.matched_count, "response")
             if response.matched_count > 0:
                 return {
                     "message": "Dados atualizados com sucesso",
