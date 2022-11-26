@@ -35,6 +35,14 @@ items_validator = {
                 "description": "Colaborador que está com o item",
             },
             "url": {"bsonType": ["string", "null"], "description": "URL da imagem"},
+            "imageItem": {
+                "bsonType": ["string", "null"],
+                "description": "Imagem ilustrativa do item ",
+            },
+            "fileItem": {
+                "bsonType": ["string", "null"],
+                "description": "Arquivo do item",
+            },
             "createdAt": {
                 "bsonType": "date",
                 "description": "Data da criação do item",
