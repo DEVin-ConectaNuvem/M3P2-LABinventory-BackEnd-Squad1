@@ -46,6 +46,7 @@ def test_create_employee_invalid_cep_format(client):
     assert response.status_code == 400
     assert response.json["error"] == "Erro em validação - Contate o suporte"
 
+
 def test_create_employee_invalid_name(client):
     data_copy = data.copy()
     data_copy["name"] = "ab"
