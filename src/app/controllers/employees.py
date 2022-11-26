@@ -27,7 +27,8 @@ def get_all():
     limit = request.args.get("limit", 8, type=int)
     search_field = request.args.get("searchField", None, type=str)
     search_value = request.args.get("searchValue", None, type=str)
-    operator = request.args.get("operator", None, type=str)
+    operator = request.args.get("operatorSearch", None, type=str)
+
     payload = {}
     if page and limit:
         payload = {
