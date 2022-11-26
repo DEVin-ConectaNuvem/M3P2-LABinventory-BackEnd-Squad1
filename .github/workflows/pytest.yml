@@ -7,16 +7,16 @@ on:
     branches: [ feat/ci-cd ]
     
 env:
-  DAY_OF_WEEK: ${{secrets.DAY_OF_WEEK}}
-  FLASK_APP: ${{secrets.FLASK_APP}}
-  FLASK_ENV: ${{secrets.FLASK_ENV}}
-  SECRET_KEY: ${{secrets.SECRET_KEY}}
-  GOOGLE_CLIENT_ID: ${{secrets.GOOGLE_CLIENT_ID}}
-  OAUTHLIB_INSECURE_TRANSPORT: ${{secrets.OAUTHLIB_INSECURE_TRANSPORT}}
-  BACKEND_URL: ${{secrets.BACKEND_URL}}
-  FRONTEND_URL: ${{secrets.FRONTEND_URL}}
-  MONGO_URI: ${{secrets.MONGO_URI}}
-  MONGO_URI_TESTING: ${{secrets.MONGO_URI_TESTING}}
+  DAY_OF_WEEK: ${{ secrets.DAY_OF_WEEK }}
+  FLASK_APP: ${{ secrets.FLASK_APP }}
+  FLASK_ENV: ${{ secrets.FLASK_ENV }}
+  SECRET_KEY: ${{ secrets.SECRET_KEY }}
+  GOOGLE_CLIENT_ID: ${{ secrets.GOOGLE_CLIENT_ID }}
+  OAUTHLIB_INSECURE_TRANSPORT: ${{ secrets.OAUTHLIB_INSECURE_TRANSPORT }}
+  BACKEND_URL: ${{ secrets.BACKEND_URL }}
+  FRONTEND_URL: ${ {secrets.FRONTEND_URL }}
+  MONGO_URI: ${{ secrets.MONGO_URI }}
+  MONGO_URI_TESTING: ${{ secrets.MONGO_URI_TESTING }}
   
 jobs:
   test:
