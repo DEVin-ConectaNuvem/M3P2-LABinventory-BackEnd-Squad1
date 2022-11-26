@@ -5,6 +5,9 @@ test:
 	poetry run pytest -v --cov-report term-missing --cov-report html --cov-branch \
 		--cov src/
 
+run:
+	poetry run flask run
+
 lint:
 	@echo "Running isort"
 	poetry run isort .

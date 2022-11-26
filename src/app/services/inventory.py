@@ -50,7 +50,7 @@ class Inventory_Service:
     def get_inventory_list(self, req_args=None):
         try:
             all_employees = list(
-                mongo_client["employees"].find({}, {"name": 1, "_id": 1})
+                mongo_client["employees"].find({}, {"name": 1, "_id": 1, "email": 1})
             )
             list_employees_formated = Database.format_return(all_employees)
             all_items = []
