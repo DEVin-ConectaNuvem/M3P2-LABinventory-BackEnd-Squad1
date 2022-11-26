@@ -1,7 +1,7 @@
 import json
 
 mimetype = "application/json"
-url = "/employers/create"
+url = "/employees/create"
 
 headers = {"Content-Type": mimetype, "Accept": mimetype}
 
@@ -24,7 +24,7 @@ data = {
 }
 
 
-def test_create_employers_missing_fields(client):
+def test_create_employee_missing_fields(client):
     data_copy = data.copy()
     del data_copy["name"]
     response = client.post(
@@ -35,9 +35,21 @@ def test_create_employers_missing_fields(client):
     assert response.json["error"] == "Está faltando o item name"
 
 
-def test_create_employer_invalid_cep_format(client):
+def test_create_employee_invalid_cep_format(client):
     data_copy = data.copy()
     data_copy["zipcode"] = "12345678999"
+
+    response = client.post(
+        "/employees/create", data=json.dumps(data_copy), headers=headers
+    )
+
+    assert response.status_code == 400
+    assert response.json["error"] == "Erro em validação - Contate o suporte"
+
+
+def test_create_employee_invalid_name(client):
+    data_copy = data.copy()
+    data_copy["name"] = "ab"
 
     response = client.post(
         "/employees/create", data=json.dumps(data_copy), headers=headers
