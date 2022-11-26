@@ -2,6 +2,7 @@ from bson import json_util
 from flask import Blueprint, request
 from flask.wrappers import Response
 
+from src.app.middlewares.auth import requires_access_level
 from src.app.services import employees as employees_service
 from src.app.validators import adjust_errors_from_mongoschema
 
@@ -10,6 +11,7 @@ employee_service = employees_service.Employees_Service()
 
 
 @employees.route("/create", methods=["POST"])
+@requires_access_level(["READ", "WRITE"])
 def create():
     data = request.get_json()
     response = employee_service.create_employee(data, "employees")
@@ -22,6 +24,7 @@ def create():
 
 
 @employees.route("/", methods=["GET"])
+@requires_access_level(["READ"])
 def get_all():
     page = request.args.get("page", 1, type=int)
     limit = request.args.get("limit", 8, type=int)
@@ -49,6 +52,7 @@ def get_all():
 
 
 @employees.route("/<id>", methods=["GET"])
+@requires_access_level(["READ"])
 def get_by_id(id):
     response = employee_service.get_employee_by_id(id)
 
@@ -62,6 +66,7 @@ def get_by_id(id):
 
 
 @employees.route("/update", methods=["PATCH"])
+@requires_access_level(["READ", "WRITE", "UPDATE"])
 def update():
     data = request.get_json()
     response = employee_service.update_employee(data, "employees")
@@ -76,6 +81,7 @@ def update():
 
 
 @employees.route("/delete", methods=["DELETE"])
+@requires_access_level(["READ", "WRITE", "UPDATE", "DELETE"])
 def delete():
     response = employee_service.delete_employee(request.args)
 

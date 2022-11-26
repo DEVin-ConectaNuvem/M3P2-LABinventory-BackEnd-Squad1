@@ -21,7 +21,7 @@ def app():
 
 @pytest.fixture
 def create_user_in_client(client):
-    data = {"email": "thiago@teste.com", "password": "12345678"}
+    data = {"email": "admin@teste.com", "password": "12345678", "role": "ADMIN"}
 
     response = client.post("users/create", data=json.dumps(data), headers=headers)
     return response
@@ -29,7 +29,7 @@ def create_user_in_client(client):
 
 @pytest.fixture
 def logged_in_client(client):
-    data = {"email": "teste@teste.com", "password": "12345678"}
+    data = {"email": "admin@teste.com", "password": "12345678"}
 
     response = client.post("users/login", data=json.dumps(data), headers=headers)
     return response.json["token"]
