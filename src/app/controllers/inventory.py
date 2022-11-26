@@ -1,3 +1,5 @@
+import re
+
 from bson import json_util
 from flask import Blueprint, json, request
 from flask.wrappers import Response
@@ -27,7 +29,8 @@ def get_all():
     limit = request.args.get("limit", 8, type=int)
     search_field = request.args.get("searchField", None, type=str)
     search_value = request.args.get("searchValue", None, type=str)
-    operator = request.args.get("operator", None, type=str)
+    operator = request.args.get("operatorSearch", None, type=str)
+
     payload = {}
     if page and limit:
         payload = {
@@ -66,7 +69,11 @@ def list():
     limit = request.args.get("limit", 8, type=int)
     search_field = request.args.get("searchField", None, type=str)
     search_value = request.args.get("searchValue", None, type=str)
-    operator = request.args.get("operator", None, type=str)
+    operator = request.args.get("operatorSearch", None, type=str)
+
+    if operator == "like":
+        search_value = {"$regex": re.compile(search_value, re.IGNORECASE)}
+
     payload = {}
     if page and limit:
         payload = {

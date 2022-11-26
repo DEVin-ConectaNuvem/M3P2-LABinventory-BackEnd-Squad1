@@ -37,6 +37,14 @@ class Database(object):
 
     def get_data_with_paginate(self, data):
         try:
+            if data["operator"] == "like":
+                data_with_like = [
+                    {key: {"$regex": re.compile(value, re.IGNORECASE)}}
+                    for key, value in data["filter"].items()
+                ]
+                for item in data_with_like:
+                    data["filter"].update(item)
+
             response = list(
                 mongo_client[self.collection]
                 .find(data["filter"])
