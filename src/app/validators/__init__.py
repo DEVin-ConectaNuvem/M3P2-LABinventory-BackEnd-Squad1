@@ -40,7 +40,9 @@ def decorator_validate_types(f):
         for key in object:
             if key == "_id" or key == "id":
                 continue
-            elif (key != "dataset") and (key not in validate["$jsonSchema"]["properties"]):
+            elif (key != "dataset") and (
+                key not in validate["$jsonSchema"]["properties"]
+            ):
                 return {"error": f"Chave {key} não existe na collection", "status": 400}
             elif (
                 key != "dataset"
@@ -58,7 +60,10 @@ def decorator_validate_types(f):
             elif key == "dataset":
                 for key in object["dataset"]:
                     if key not in validate["$jsonSchema"]["properties"]:
-                        return {"error": f"Chave {key} não existe na collection", "status": 400}
+                        return {
+                            "error": f"Chave {key} não existe na collection",
+                            "status": 400,
+                        }
                     elif (
                         type(validate["$jsonSchema"]["properties"][key]["bsonType"])
                         == list

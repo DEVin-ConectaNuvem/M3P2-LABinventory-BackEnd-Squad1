@@ -25,7 +25,10 @@ class Inventory_Service:
             exists_cod = self.db.get_one({"codPatrimonio": cod_patrimonio})
 
             if exists_cod:
-                return {"error": "O código de patrimonio informado já existe", "status": 400}
+                return {
+                    "error": "O código de patrimonio informado já existe",
+                    "status": 400,
+                }
 
             return self.db.create(data)
         except Exception as e:
@@ -81,7 +84,10 @@ class Inventory_Service:
                 if cod_patrimonio_initial != cod_patrimonio:
                     exists_cod = self.db.get_one({"codPatrimonio": cod_patrimonio})
                     if exists_cod:
-                        return {"error": "O código de patrimonio informado já existe", "status": 400}
+                        return {
+                            "error": "O código de patrimonio informado já existe",
+                            "status": 400,
+                        }
 
             return self.db.update(data)
         except Exception as e:
