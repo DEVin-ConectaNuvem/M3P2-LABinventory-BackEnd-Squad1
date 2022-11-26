@@ -7,16 +7,16 @@ on:
     branches: [ feat/ci-cd ]
     
 env:
-  DAY_OF_WEEK: Monday
-  FLASK_APP: app.py
-  FLASK_ENV: testing
-  SECRET_KEY: ALGUMSEGREDO
-  GOOGLE_CLIENT_ID: 77077858508-5831ve5va21absne1iutu8lllue9th46.apps.googleusercontent.com
-  OAUTHLIB_INSECURE_TRANSPORT: 1
-  BACKEND_URL: http://localhost:5000/
-  FRONTEND_URL: http://localhost:3000/
-  MONGO_URI: mongodb+srv://gpm3p3s1:jX%25%26DpG7dPZsTFw%24kDg6%26uR%26o%23%5Ezmg3C%23@conectanuvem.mkaa8lo.mongodb.net/db
-  MONGO_URI_TESTING: mongodb+srv://gpm3p3s1:jX%25%26DpG7dPZsTFw%24kDg6%26uR%26o%23%5Ezmg3C%23@conectanuvem.mkaa8lo.mongodb.net/test
+  DAY_OF_WEEK: ${{secrets.DAY_OF_WEEK}}
+  FLASK_APP: ${{secrets.FLASK_APP}}
+  FLASK_ENV: ${{secrets.FLASK_ENV}}
+  SECRET_KEY: ${{secrets.SECRET_KEY}}
+  GOOGLE_CLIENT_ID: ${{secrets.GOOGLE_CLIENT_ID}}
+  OAUTHLIB_INSECURE_TRANSPORT: ${{secrets.OAUTHLIB_INSECURE_TRANSPORT}}
+  BACKEND_URL: ${{secrets.BACKEND_URL}}
+  FRONTEND_URL: ${{secrets.FRONTEND_URL}}
+  MONGO_URI: ${{secrets.MONGO_URI}}
+  MONGO_URI_TESTING: ${{secrets.MONGO_URI_TESTING}}
   
 jobs:
   test:
@@ -24,6 +24,7 @@ jobs:
     steps:
       - name: Check out repository
         uses: actions/checkout@v3
+
       - name: Set up python
         id: setup-python
         uses: actions/setup-python@v4
