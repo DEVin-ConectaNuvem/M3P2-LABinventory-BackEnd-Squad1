@@ -9,7 +9,7 @@ on:
 env:
   DAY_OF_WEEK: ${{ secrets.DAY_OF_WEEK }}
   FLASK_APP: ${{ secrets.FLASK_APP }}
-  FLASK_ENV: testing
+  FLASK_ENV: ${{ secrets.FLASK_ENV }}
   SECRET_KEY: ${{ secrets.SECRET_KEY }}
   GOOGLE_CLIENT_ID: ${{ secrets.GOOGLE_CLIENT_ID }}
   OAUTHLIB_INSECURE_TRANSPORT: ${{ secrets.OAUTHLIB_INSECURE_TRANSPORT }}
