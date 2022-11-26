@@ -12,7 +12,7 @@ data = {
     "phone": "1234567899",
     "position": "Desenvolvedor Backend",
     "gender": "Masculino",
-    "zipcode": "855010070",
+    "zipcode": "85501-070",
     "birthDay": "2000-01-01",
     "city": "Pato Branco",
     "state": "PR",
@@ -37,14 +37,14 @@ def test_create_employee_missing_fields(client):
 
 def test_create_employee_invalid_cep_format(client):
     data_copy = data.copy()
-    data_copy["zipcode"] = "12345678999"
+    data_copy["zipcode"] = "1234567899999"
 
     response = client.post(
         "/employees/create", data=json.dumps(data_copy), headers=headers
     )
 
     assert response.status_code == 400
-    assert response.json["error"] == "Erro em validação - Contate o suporte"
+    assert "O campo zipcode não está no formato correto" in response.json["error"]
 
 
 def test_create_employee_invalid_name(client):
@@ -56,4 +56,4 @@ def test_create_employee_invalid_name(client):
     )
 
     assert response.status_code == 400
-    assert response.json["error"] == "Erro em validação - Contate o suporte"
+    assert response.json["error"] == "O campo name não está no formato correto"
