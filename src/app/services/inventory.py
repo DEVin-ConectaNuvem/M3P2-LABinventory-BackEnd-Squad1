@@ -97,7 +97,7 @@ class Inventory_Service:
         try:
             return self.db.delete(inventory_id)
         except Exception as e:
-           return {"error": str(e)}
+            return {"error": str(e)}
 
     def get_analytics(self):
         try:
