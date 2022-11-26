@@ -1,4 +1,4 @@
-import json
+import re
 
 from src.app.models.employees import employees_validator
 from src.app.models.items import items_validator
@@ -34,6 +34,12 @@ def decorator_validate_exist_item(funcao):
 
 def decorator_validate_types(f):
     def types_and_keys(*args, **kwargs):
+        def validateRegex(regex, value):
+            result = re.compile(regex).match(value)
+            if result is None:
+                return False
+            return True
+
         object = args[1]
         collection = args[2]
         validate = validators_source[collection]
@@ -52,6 +58,18 @@ def decorator_validate_types(f):
                 for bsonType in validate["$jsonSchema"]["properties"][key]["bsonType"]:
                     if type(object[key]) in convertTypes[bsonType]:
                         validate_list = True
+                    if "pattern" in validate["$jsonSchema"]["properties"][key]:
+                        if (
+                            validateRegex(
+                                validate["$jsonSchema"]["properties"][key]["pattern"],
+                                object[key],
+                            )
+                            == False
+                        ):
+                            return {
+                                "error": f"O campo {key} não está no formato correto",
+                                "status": 400,
+                            }
                 if validate_list == False:
                     return {
                         "error": f"O tipo do item {key} não é válido",
@@ -97,6 +115,18 @@ def decorator_validate_types(f):
                     "error": f"O tipo do item {key} não é o mesmo da collection",
                     "status": 400,
                 }
+            elif "pattern" in validate["$jsonSchema"]["properties"][key]:
+                if (
+                    validateRegex(
+                        validate["$jsonSchema"]["properties"][key]["pattern"],
+                        object[key],
+                    )
+                    == False
+                ):
+                    return {
+                        "error": f"O campo {key} não está no formato correto",
+                        "status": 400,
+                    }
         return f(*args, **kwargs)
 
     return types_and_keys

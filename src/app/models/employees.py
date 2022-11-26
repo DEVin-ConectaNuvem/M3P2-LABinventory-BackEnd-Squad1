@@ -43,7 +43,7 @@ employees_validator = {
             "gender": {"bsonType": "string", "description": "Genero do colaborador"},
             "zipcode": {
                 "bsonType": "string",
-                "pattern": "^[0-9]{5}+-[0-9]{3}$",
+                "pattern": "^[0-9]{5}-[0-9]{3}$",
                 "description": "CEP do colaborador",
             },
             "city": {"bsonType": "string", "description": "Cidade do colaborador"},

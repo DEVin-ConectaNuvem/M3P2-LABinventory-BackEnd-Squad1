@@ -8,8 +8,8 @@ headers = {"Content-Type": mimetype, "Accept": mimetype}
 
 data = {
     "name": "João da Silva",
-    "email": "joaosilvaTeste@gmail.com",
-    "phone": "(11) 9999-9999",
+    "email": "teste1234567@gmail.com",
+    "phone": "1234567899",
     "position": "Desenvolvedor Backend",
     "gender": "Masculino",
     "zipcode": "855010070",
@@ -30,7 +30,7 @@ def test_create_employee_missing_fields(client):
     response = client.post(
         "employees/create", data=json.dumps(data_copy), headers=headers
     )
-    print(response, "response")
+
     assert response.status_code == 400
     assert response.json["error"] == "Está faltando o item name"
 
