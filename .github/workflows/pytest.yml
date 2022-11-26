@@ -1,0 +1,66 @@
+name: Testes do endpoint
+
+on:
+  push:
+    branches: [ development, main ]
+  pull_request:
+    branches: [ development, main ]
+    
+env:
+  DAY_OF_WEEK: ${{ secrets.DAY_OF_WEEK }}
+  FLASK_APP: ${{ secrets.FLASK_APP }}
+  FLASK_ENV: ${{ secrets.FLASK_ENV }}
+  SECRET_KEY: ${{ secrets.SECRET_KEY }}
+  GOOGLE_CLIENT_ID: ${{ secrets.GOOGLE_CLIENT_ID }}
+  OAUTHLIB_INSECURE_TRANSPORT: ${{ secrets.OAUTHLIB_INSECURE_TRANSPORT }}
+  BACKEND_URL: ${{ secrets.BACKEND_URL }}
+  FRONTEND_URL: ${ {secrets.FRONTEND_URL }}
+  MONGO_URI: ${{ secrets.MONGO_URI }}
+  MONGO_URI_TESTING: ${{ secrets.MONGO_URI_TESTING }}
+  
+jobs:
+  linting:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-python@v4
+      - uses: actions/cache@v3
+        with:
+          path: ~/.cache/pip
+          key: ${{ runner.os }}-pip
+          restore-keys: ${{ runner.os }}-pip
+      - run: python -m pip install black flake8 isort
+      - run: |
+          flake8 .
+          black . --check
+          isort .
+
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v3
+
+      - name: Set up python
+        id: setup-python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
+
+      - name: Install Poetry
+        uses: snok/install-poetry@v1
+        with:
+          version: latest
+          virtualenvs-create: true
+          virtualenvs-in-project: true
+          installer-parallel: true
+
+
+      - name: Install dependencies
+        if: steps.cached-poetry-dependencies.outputs.cache-hit != 'true'
+        run: poetry install --no-interaction --no-root
+
+      - name: Run tests
+        run: |
+          source .venv/bin/activate
+          pytest tests/ -v -W ignore::DeprecationWarning

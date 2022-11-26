@@ -58,6 +58,5 @@ def test_create_user_with_invalid_passwordl(client):
 
 		response = client.post("users/create", data=json.dumps(data), headers=headers)
 
-		assert response.status_code == 401
-		assert response.json['error'] == "Suas credênciais estão incorretas!"
-		assert response.json['status_code'] == 401
+		assert response.status_code == 400
+		assert response.json['error'] == "A senha deve ter no mínimo 8 caracteres"
