@@ -1,0 +1,27 @@
+[
+    {
+        "name": "ADMIN",
+        "description": "Administrador",
+        "permissions": ["READ", "WRITE", "DELETE", "UPDATE"]
+    },
+    {
+        "name": "BACK_END",
+        "description": "Desenvolvedor Backend",
+        "permissions": ["READ", "WRITE", "UPDATE"]
+    },
+    {
+        "name": "FRONT_END",
+        "description": "Desenvolvedor Frontend",
+        "permissions": ["READ", "WRITE", "UPDATE"]
+    },
+    {
+        "name": "FULLSTACK",
+        "description": "Desenvolvedor Fullstack",
+        "permissions": ["READ", "WRITE", "UPDATE"]
+    },
+    {
+        "name": "USER",
+        "description": "Usuário",
+        "permissions": ["READ", "WRITE", "UPDATE"]
+      }
+]

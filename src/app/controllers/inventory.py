@@ -2,6 +2,7 @@ from bson import json_util
 from flask import Blueprint, json, request
 from flask.wrappers import Response
 
+from src.app.middlewares.auth import requires_access_level
 from src.app.services.inventory import Inventory_Service
 from src.app.validators import adjust_errors_from_mongoschema
 
@@ -10,6 +11,7 @@ inventorys_service = Inventory_Service()
 
 
 @inventory.route("/create", methods=["POST"])
+@requires_access_level(["READ", "WRITE"])
 def create():
     data = request.get_json()
     response = inventorys_service.create_inventory(data, "items")
@@ -22,6 +24,7 @@ def create():
 
 
 @inventory.route("/", methods=["GET"])
+@requires_access_level(["READ"])
 def get_all():
     page = request.args.get("page", 1, type=int)
     limit = request.args.get("limit", 8, type=int)
@@ -49,6 +52,7 @@ def get_all():
 
 
 @inventory.route("/<id>", methods=["GET"])
+@requires_access_level(["READ"])
 def get_by_id(id):
     response = inventorys_service.get_inventory_by_id(id)
 
@@ -62,6 +66,7 @@ def get_by_id(id):
 
 
 @inventory.route("/list", methods=["GET"])
+@requires_access_level(["READ"])
 def list():
     page = request.args.get("page", 1, type=int)
     limit = request.args.get("limit", 8, type=int)
@@ -89,6 +94,7 @@ def list():
 
 
 @inventory.route("/update", methods=["PATCH"])
+@requires_access_level(["READ", "WRITE", "UPDATE"])
 def update():
     data = request.get_json()
     response = inventorys_service.update_inventory(data, "items")
@@ -103,6 +109,7 @@ def update():
 
 
 @inventory.route("/delete", methods=["DELETE"])
+@requires_access_level(["READ", "WRITE", "UPDATE", "DELETE"])
 def delete():
     response = inventorys_service.delete_inventory(request.args)
 
@@ -116,6 +123,7 @@ def delete():
 
 
 @inventory.route("/analytics", methods=["GET"])
+@requires_access_level(["READ"])
 def get_analytics():
     response = inventorys_service.get_analytics()
 

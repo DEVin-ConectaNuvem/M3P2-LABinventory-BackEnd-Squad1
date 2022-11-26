@@ -24,9 +24,11 @@ data = {
 }
 
 
-def test_create_employers_missing_fields(client):
+def test_create_employers_missing_fields(client, logged_in_client):
     data_copy = data.copy()
     del data_copy["name"]
+    headers['Authorization'] = f"Bearer {logged_in_client}"
+    
     response = client.post(
         "employees/create", data=json.dumps(data_copy), headers=headers
     )
@@ -35,9 +37,10 @@ def test_create_employers_missing_fields(client):
     assert response.json["error"] == "Está faltando o item name"
 
 
-def test_create_employer_invalid_cep_format(client):
+def test_create_employer_invalid_cep_format(client, logged_in_client):
     data_copy = data.copy()
     data_copy["zipcode"] = "12345678999"
+    headers['Authorization'] = f"Bearer {logged_in_client}"
 
     response = client.post(
         "/employees/create", data=json.dumps(data_copy), headers=headers
