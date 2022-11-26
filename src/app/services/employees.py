@@ -1,5 +1,3 @@
-from flask import jsonify
-
 from src.app.validators import (
     decorator_validate_required_keys,
     decorator_validate_types,
