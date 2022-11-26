@@ -32,7 +32,7 @@ class Inventory_Service:
 
             return self.db.create(data)
         except Exception as e:
-            return e
+            return {"error": str(e)}
 
     def get_inventory(self, req_args=None):
         try:
@@ -42,13 +42,13 @@ class Inventory_Service:
                 res = self.db.get_all()
                 return res
         except Exception as e:
-            return e
+            return {"error": str(e)}
 
     def get_inventory_by_id(self, inventory_id):
         try:
             return self.db.get_by_id(inventory_id)
         except Exception as e:
-            return e
+            return {"error": str(e)}
 
     def get_inventory_list(self, req_args=None):
         try:
@@ -71,7 +71,7 @@ class Inventory_Service:
 
             return result
         except Exception as e:
-            return e
+            return {"error": str(e)}
 
     @decorator_validate_types
     @decorator_validate_required_keys
@@ -91,13 +91,13 @@ class Inventory_Service:
 
             return self.db.update(data)
         except Exception as e:
-            return e
+            return {"error": str(e)}
 
     def delete_inventory(self, inventory_id):
         try:
             return self.db.delete(inventory_id)
         except Exception as e:
-            return e
+           return {"error": str(e)}
 
     def get_analytics(self):
         try:
@@ -123,4 +123,4 @@ class Inventory_Service:
             }
             return response
         except Exception as e:
-            return {"error": e}
+            return {"error": str(e)}
