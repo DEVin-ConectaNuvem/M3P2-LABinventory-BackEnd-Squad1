@@ -61,3 +61,16 @@ def test_create_employee_invalid_name(client, logged_in_client):
 
     assert response.status_code == 400
     assert response.json["error"] == "O campo name não está no formato correto"
+
+
+def test_create_employee_invalid_email(client, logged_in_client):
+    data_copy = data.copy()
+    data_copy["email"] = "123@abc"
+    headers["Authorization"] = f"Bearer {logged_in_client}"
+
+    response = client.post(
+        "/employees/create", data=json.dumps(data_copy), headers=headers
+    )
+
+    assert response.status_code == 400
+    assert response.json["error"] == "O campo email não está no formato correto"
