@@ -43,26 +43,27 @@ def test_create_inventory_missing_fields(client, logged_in_client):
     assert response.status_code == 400
     assert response.json["error"] == "Está faltando o item title"
 
+
 def test_create_inventory_invalid_value(client):
     data_copy = data.copy()
     data_copy["codPatrimonio"] = "mais um teste" + str(randint(1, 1000))
     data_copy["value"] = -1
-    
+
     response = client.post(
-        "inventory/create", data=json.dumps(data_copy), headers= headers
+        "inventory/create", data=json.dumps(data_copy), headers=headers
     )
-    
+
     assert response.status_code == 400
     assert response.json["error"] == "Erro em validação - Contate o suporte"
-    
+
+
 def test_create_inventory_product_code_exists(client):
     data_copy = data.copy()
     data_copy["codPatrimonio"] = "1"
-    
+
     response = client.post(
-        "inventory/create", data=json.dumps(data_copy), headers= headers
+        "inventory/create", data=json.dumps(data_copy), headers=headers
     )
-    
+
     assert response.status_code == 400
     assert response.json["error"] == "O código de patrimonio informado já existe"
-        
