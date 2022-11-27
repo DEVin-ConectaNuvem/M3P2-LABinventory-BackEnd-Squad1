@@ -1,5 +1,3 @@
-from flask import jsonify
-
 from src.app.validators import (
     decorator_validate_required_keys,
     decorator_validate_types,
@@ -24,7 +22,7 @@ class Employees_Service:
 
             return self.db.create(object)
         except Exception as e:
-            return jsonify({"error": str(e)}), 400
+            return {"error": str(e)}
 
     def get_employees(self, req_args=None):
         try:
@@ -34,13 +32,13 @@ class Employees_Service:
                 res = self.db.get_all()
                 return res
         except Exception as e:
-            return e
+            return {"error": str(e)}
 
     def get_employee_by_id(self, employee_id):
         try:
             return self.db.get_by_id(employee_id)
         except Exception as e:
-            return e
+            return {"error": str(e)}
 
     @decorator_validate_types
     @decorator_validate_required_keys
@@ -60,10 +58,10 @@ class Employees_Service:
 
             return self.db.update(data)
         except Exception as e:
-            return e
+            return {"error": str(e)}
 
     def delete_employee(self, employee_id):
         try:
             return self.db.delete(employee_id)
         except Exception as e:
-            return e
+            return {"error": str(e)}

@@ -1,3 +1,5 @@
+from src.app.database.seeds import seeds
+
 employees_validator = {
     "$jsonSchema": {
         "bsonType": "object",
@@ -25,7 +27,7 @@ employees_validator = {
             },
             "name": {
                 "bsonType": "string",
-                "pattern": "^[a-zA-Z0-9 ]{3,99}$",
+                "pattern": "^[A-Za-záàâãéèêíïóôõöúçñÁÀÂÃÉÈÍÏÓÔÕÖÚÇÑ ]{3,99}$",
                 "description": "Nome do colaborador",
             },
             "birthDay": {"bsonType": "string", "description": "Idade do colaborador"},
@@ -43,7 +45,7 @@ employees_validator = {
             "gender": {"bsonType": "string", "description": "Genero do colaborador"},
             "zipcode": {
                 "bsonType": "string",
-                "pattern": "^[0-9]{5}+-[0-9]{3}$",
+                "pattern": "^[0-9]{5}-[0-9]{3}$",
                 "description": "CEP do colaborador",
             },
             "city": {"bsonType": "string", "description": "Cidade do colaborador"},
@@ -90,6 +92,10 @@ def create_collection_employees(mongo_client):
     try:
         print("Criando a collection employeeS...")
         mongo_client.create_collection("employees")
+        if(mongo_client.employees.count_documents({}) == 0):
+            print("Gerando dados iniciais...")
+            mongo_client.employees.insert_many(seeds["employees"])
+        
         print("employeeS CRIADO COM SUCESSO.")
     except Exception as e:
         print(e)

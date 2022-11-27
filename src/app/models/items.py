@@ -1,3 +1,5 @@
+from src.app.database.seeds import seeds
+
 items_validator = {
     "$jsonSchema": {
         "bsonType": "object",
@@ -35,6 +37,14 @@ items_validator = {
                 "description": "Colaborador que está com o item",
             },
             "url": {"bsonType": ["string", "null"], "description": "URL da imagem"},
+            "imageItem": {
+                "bsonType": ["string", "null"],
+                "description": "Imagem ilustrativa do item ",
+            },
+            "fileItem": {
+                "bsonType": ["string", "null"],
+                "description": "Arquivo do item",
+            },
             "createdAt": {
                 "bsonType": "date",
                 "description": "Data da criação do item",
@@ -52,6 +62,9 @@ def create_collection_items(mongo_client):
     try:
         print("Criando a collection ITEMS...")
         mongo_client.create_collection("items")
+        if mongo_client.items.count_documents({}) == 0:
+            print("Gerando dados iniciais...")
+            mongo_client.items.insert_many(seeds["items"])
         print("ITEMS CRIADO COM SUCESSO.")
     except Exception as e:
         print(e)

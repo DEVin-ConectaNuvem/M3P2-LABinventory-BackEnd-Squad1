@@ -25,11 +25,14 @@ class Inventory_Service:
             exists_cod = self.db.get_one({"codPatrimonio": cod_patrimonio})
 
             if exists_cod:
-                return {"error": "codPatrimonio already exists", "status": 400}
+                return {
+                    "error": "O código de patrimonio informado já existe",
+                    "status": 400,
+                }
 
             return self.db.create(data)
         except Exception as e:
-            return e
+            return {"error": str(e)}
 
     def get_inventory(self, req_args=None):
         try:
@@ -39,13 +42,13 @@ class Inventory_Service:
                 res = self.db.get_all()
                 return res
         except Exception as e:
-            return e
+            return {"error": str(e)}
 
     def get_inventory_by_id(self, inventory_id):
         try:
             return self.db.get_by_id(inventory_id)
         except Exception as e:
-            return e
+            return {"error": str(e)}
 
     def get_inventory_list(self, req_args=None):
         try:
@@ -68,7 +71,7 @@ class Inventory_Service:
 
             return result
         except Exception as e:
-            return e
+            return {"error": str(e)}
 
     @decorator_validate_types
     @decorator_validate_required_keys
@@ -81,17 +84,20 @@ class Inventory_Service:
                 if cod_patrimonio_initial != cod_patrimonio:
                     exists_cod = self.db.get_one({"codPatrimonio": cod_patrimonio})
                     if exists_cod:
-                        return {"error": "codPatrimonio already exists", "status": 400}
+                        return {
+                            "error": "O código de patrimonio informado já existe",
+                            "status": 400,
+                        }
 
             return self.db.update(data)
         except Exception as e:
-            return e
+            return {"error": str(e)}
 
     def delete_inventory(self, inventory_id):
         try:
             return self.db.delete(inventory_id)
         except Exception as e:
-            return e
+            return {"error": str(e)}
 
     def get_analytics(self):
         try:
@@ -112,9 +118,9 @@ class Inventory_Service:
             response = {
                 "total_value": json.loads(json_total_value_items)[0]["totalValue"],
                 "total_items": json.loads(json_total_items),
-                "total_borrowed": json.loads(json_total_borrowed)[0]["borrowed"],
+                "total_borrowed": json.loads(json_total_borrowed)[0]["borrowed"] if json_total_borrowed != "[]" else 0,
                 "total_collabs": json.loads(json_total_collabs),
             }
             return response
         except Exception as e:
-            return {"error": e}
+            return {"error": str(e)}
