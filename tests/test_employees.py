@@ -61,3 +61,14 @@ def test_create_employee_invalid_name(client, logged_in_client):
 
     assert response.status_code == 400
     assert response.json["error"] == "O campo name não está no formato correto"
+
+def test_create_employee_email_already_exists(client):
+    data_copy = data.copy()
+    data_copy["email"] = "joaosilvaTeste@gmail.com"
+    
+    response = client.post(
+        "/employees/create", data=json.dumps(data_copy), headers= headers
+    )
+    
+    assert response.status_code == 400
+    assert response.json["error"] == "Email informado já possui cadastro"
