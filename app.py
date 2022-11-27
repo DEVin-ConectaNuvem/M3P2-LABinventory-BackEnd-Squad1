@@ -1,4 +1,5 @@
 import click
+import os
 from flask.cli import with_appcontext
 
 from src.app import app, mongo_client
@@ -23,4 +24,4 @@ def call_command():
 app.cli.add_command(call_command)
 
 if __name__ == "__main__":
-    app.run()
+    app.run(host=os.getenv('HOST'), port=os.getenv('PORT'))
