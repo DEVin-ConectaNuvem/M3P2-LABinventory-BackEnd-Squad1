@@ -1,3 +1,4 @@
+# flake8: noqa
 seeds = {
     "items": [
         {
@@ -14,7 +15,7 @@ seeds = {
         {
             "codPatrimonio": "2",
             "title": "Notebook Gamer Lenovo Gaming",
-            "description": "Novo design com 11ª Geração de Processadores Intel Core i5-11300H e placa de vídeo NVIDIA GeForce GTX 1650 4GB. Ideal para gamers e usuários que também precisam de alta performance.\n Com tela de 15.6 Full HD WVA Antirreflexo para melhor definição de imagem e cores.",
+            "description": "Novo design com 11ª Geração de Processadores Intel Core i5-11300H e placa de vídeo NVIDIA",
             "category": "Computador",
             "value": 3499.99,
             "url": "https://images.kabum.com.br/produtos/fotos/378467/notebook-gamer-lenovo-ideapad-3i-intel-core-i5-11300h-geforce-gtx1650-8gb-ram-ssd-512gb-15-6-full-hd-linux-preto-82mgs00200_1666118881_gg.jpg",

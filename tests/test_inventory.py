@@ -19,7 +19,7 @@ data = {
 
 def test_create_inventory_sucess(client, logged_in_client):
     data_copy = data.copy()
-    headers['Authorization'] = f"Bearer {logged_in_client}"
+    headers["Authorization"] = f"Bearer {logged_in_client}"
 
     response = client.post(
         "inventory/create", data=json.dumps(data_copy), headers=headers
@@ -31,7 +31,7 @@ def test_create_inventory_sucess(client, logged_in_client):
 def test_create_inventory_missing_fields(client, logged_in_client):
     data_copy = data.copy()
     del data_copy["title"]
-    headers['Authorization'] = f"Bearer {logged_in_client}"
+    headers["Authorization"] = f"Bearer {logged_in_client}"
 
     response = client.post(
         "inventory/create", data=json.dumps(data_copy), headers=headers
