@@ -49,7 +49,7 @@ def callback_google():
 
 
 flow = Flow.from_client_secrets_file(
-    client_secrets_file="src/app/database/client_secret.json",
+    client_secrets_file="src/app/database/client_secret_credentials.json",
     scopes=[
         "https://www.googleapis.com/auth/userinfo.email",
         "https://www.googleapis.com/auth/userinfo.profile",
