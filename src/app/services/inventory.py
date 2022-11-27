@@ -118,7 +118,7 @@ class Inventory_Service:
             response = {
                 "total_value": json.loads(json_total_value_items)[0]["totalValue"],
                 "total_items": json.loads(json_total_items),
-                "total_borrowed": json.loads(json_total_borrowed)[0]["borrowed"],
+                "total_borrowed": json.loads(json_total_borrowed)[0]["borrowed"] if json_total_borrowed != "[]" else 0,
                 "total_collabs": json.loads(json_total_collabs),
             }
             return response

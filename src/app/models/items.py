@@ -1,3 +1,5 @@
+from src.app.database.seeds import seeds
+
 items_validator = {
     "$jsonSchema": {
         "bsonType": "object",
@@ -60,6 +62,9 @@ def create_collection_items(mongo_client):
     try:
         print("Criando a collection ITEMS...")
         mongo_client.create_collection("items")
+        if mongo_client.items.count_documents({}) == 0:
+            print("Gerando dados iniciais...")
+            mongo_client.items.insert_many(seeds["items"])
         print("ITEMS CRIADO COM SUCESSO.")
     except Exception as e:
         print(e)
