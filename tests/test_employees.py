@@ -27,7 +27,7 @@ data = {
 def test_create_employee_missing_fields(client, logged_in_client):
     data_copy = data.copy()
     del data_copy["name"]
-    headers['Authorization'] = f"Bearer {logged_in_client}"
+    headers["Authorization"] = f"Bearer {logged_in_client}"
 
     response = client.post(
         "employees/create", data=json.dumps(data_copy), headers=headers
@@ -40,7 +40,7 @@ def test_create_employee_missing_fields(client, logged_in_client):
 def test_create_employee_invalid_cep_format(client, logged_in_client):
     data_copy = data.copy()
     data_copy["zipcode"] = "1234567899999"
-    headers['Authorization'] = f"Bearer {logged_in_client}"
+    headers["Authorization"] = f"Bearer {logged_in_client}"
 
     response = client.post(
         "/employees/create", data=json.dumps(data_copy), headers=headers
@@ -53,7 +53,7 @@ def test_create_employee_invalid_cep_format(client, logged_in_client):
 def test_create_employee_invalid_name(client, logged_in_client):
     data_copy = data.copy()
     data_copy["name"] = "ab"
-    headers['Authorization'] = f"Bearer {logged_in_client}"
+    headers["Authorization"] = f"Bearer {logged_in_client}"
 
     response = client.post(
         "/employees/create", data=json.dumps(data_copy), headers=headers

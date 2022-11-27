@@ -92,10 +92,10 @@ def create_collection_employees(mongo_client):
     try:
         print("Criando a collection employeeS...")
         mongo_client.create_collection("employees")
-        if(mongo_client.employees.count_documents({}) == 0):
+        if mongo_client.employees.count_documents({}) == 0:
             print("Gerando dados iniciais...")
             mongo_client.employees.insert_many(seeds["employees"])
-        
+
         print("employeeS CRIADO COM SUCESSO.")
     except Exception as e:
         print(e)
