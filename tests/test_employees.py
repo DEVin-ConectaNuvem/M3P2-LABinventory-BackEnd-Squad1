@@ -24,6 +24,19 @@ data = {
 }
 
 
+def test_create_employee_success(client , logged_in_client):
+    data_copy = data.copy();
+    headers["Authorization"] = f"Bearer {logged_in_client}";
+    
+    response = client.post(
+        "employees/create", data=json.dumps(data_copy), headers=headers
+    )
+    
+    print(response.json, "response")
+    
+    assert response.status_code == 201
+
+
 def test_create_employee_missing_fields(client, logged_in_client):
     data_copy = data.copy()
     del data_copy["name"]
