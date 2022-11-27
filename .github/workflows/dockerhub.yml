@@ -4,8 +4,7 @@ name: Build and push Docker image to Docker hub
 
 on:
   push:
-    branches: [ feat/deploy-dockerhub ]
-
+    branches: [ main ]
 
 jobs:
   build:
