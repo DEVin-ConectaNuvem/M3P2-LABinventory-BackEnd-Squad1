@@ -1,4 +1,5 @@
-import json
+import json;
+from random import randint
 
 mimetype = "application/json"
 url = "/employees/create"
@@ -8,7 +9,7 @@ headers = {"Content-Type": mimetype, "Accept": mimetype}
 
 data = {
     "name": "João da Silva",
-    "email": "teste1234567@gmail.com",
+    "email": "teste54321" + str(randint(1, 1000)) + "@gmail.com",
     "phone": "1234567899",
     "position": "Desenvolvedor Backend",
     "gender": "Masculino",
@@ -27,7 +28,7 @@ data = {
 def test_create_employee_success(client , logged_in_client):
     data_copy = data.copy();
     headers["Authorization"] = f"Bearer {logged_in_client}";
-    
+       
     response = client.post(
         "employees/create", data=json.dumps(data_copy), headers=headers
     )
@@ -35,6 +36,7 @@ def test_create_employee_success(client , logged_in_client):
     print(response.json, "response")
     
     assert response.status_code == 201
+
 
 
 def test_create_employee_missing_fields(client, logged_in_client):
