@@ -117,14 +117,12 @@ def test_find_employee_by_name(client, logged_in_client):
 
     assert response.status_code == 200
 
-
 def test_find_employee_by_id_success(client, logged_in_client):
     headers["Authorization"] = f"Bearer {logged_in_client}"
 
     response = client.get("/employees/6383746b0b9acf16803e273e", headers=headers)
 
     assert response.status_code == 200
-
 
 def test_find_employee_by_id_not_found(client, logged_in_client):
     data_copy = data.copy()
@@ -161,5 +159,13 @@ def test_update_employee_email_invalid(client, logged_in_client):
     )
     assert response.status_code == 400
 
+def test_update_employee_invalid_name(client, logged_in_client):
+    employees = seeds["employees"]
+    data_copy = employees[0]
+    data_copy["name"] = 12345
+    headers["Authorization"] = f"Bearer {logged_in_client}"
     
-    
+    response = client.patch(
+        "/employees/update", data=json.dumps(data), headers= headers
+    )
+    assert response.status_code == 400
