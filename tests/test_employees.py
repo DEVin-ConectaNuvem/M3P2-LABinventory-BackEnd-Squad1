@@ -101,3 +101,15 @@ def test_create_employee_invalid_phone(client, logged_in_client):
 
     assert response.status_code == 400
     assert response.json["error"] == "O campo phone não está no formato correto"
+
+
+def test_find_employee_by_name(client, logged_in_client):
+    data_copy = data.copy()
+    data_copy["phone"] = "abc123456789"
+    headers["Authorization"] = f"Bearer {logged_in_client}"
+
+    response = client.get(
+        "/employees/?searchField=name&searchValue=Ana", data=json.dumps(data_copy), headers=headers
+    )
+
+    assert response.status_code == 200
