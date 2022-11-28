@@ -1,4 +1,5 @@
 import json
+from random import randint
 
 mimetype = "application/json"
 url = "/employees/create"
@@ -8,7 +9,7 @@ headers = {"Content-Type": mimetype, "Accept": mimetype}
 
 data = {
     "name": "João da Silva",
-    "email": "teste1234567@gmail.com",
+    "email": "teste54321" + str(randint(1, 1000)) + "@gmail.com",
     "phone": "1234567899",
     "position": "Desenvolvedor Backend",
     "gender": "Masculino",
@@ -22,6 +23,19 @@ data = {
     "complement": "123",
     "reference": "teste",
 }
+
+
+def test_create_employee_success(client, logged_in_client):
+    data_copy = data.copy()
+    headers["Authorization"] = f"Bearer {logged_in_client}"
+
+    response = client.post(
+        "employees/create", data=json.dumps(data_copy), headers=headers
+    )
+
+    print(response.json, "response")
+
+    assert response.status_code == 201
 
 
 def test_create_employee_missing_fields(client, logged_in_client):
@@ -62,13 +76,39 @@ def test_create_employee_invalid_name(client, logged_in_client):
     assert response.status_code == 400
     assert response.json["error"] == "O campo name não está no formato correto"
 
+
+def test_create_employee_invalid_email(client, logged_in_client):
+    data_copy = data.copy()
+    data_copy["email"] = "123@abc"
+    headers["Authorization"] = f"Bearer {logged_in_client}"
+
+    response = client.post(
+        "/employees/create", data=json.dumps(data_copy), headers=headers
+    )
+
+    assert response.status_code == 400
+    assert response.json["error"] == "O campo email não está no formato correto"
+
+
+def test_create_employee_invalid_phone(client, logged_in_client):
+    data_copy = data.copy()
+    data_copy["phone"] = "abc123456789"
+    headers["Authorization"] = f"Bearer {logged_in_client}"
+
+    response = client.post(
+        "/employees/create", data=json.dumps(data_copy), headers=headers
+    )
+
+    assert response.status_code == 400
+    assert response.json["error"] == "O campo phone não está no formato correto"
+
 def test_create_employee_email_already_exists(client):
     data_copy = data.copy()
     data_copy["email"] = "joaosilvaTeste@gmail.com"
-    
+
     response = client.post(
         "/employees/create", data=json.dumps(data_copy), headers= headers
     )
-    
+
     assert response.status_code == 400
     assert response.json["error"] == "Email informado já possui cadastro"
