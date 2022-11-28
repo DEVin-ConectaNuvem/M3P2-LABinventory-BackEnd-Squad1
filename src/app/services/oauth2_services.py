@@ -35,7 +35,7 @@ def callback_google():
         create_user(user_google_dict)
         user = mongo_client.users.find_one({"email": user_google_dict["email"]})
 
-    query_role = mongo_client.roles.find_one(user['role'])
+    query_role = mongo_client.roles.find_one(user["role"])
 
     user_google_dict["user_id"] = str(user["_id"])
     user_google_dict["roles_description"] = query_role["description"]
