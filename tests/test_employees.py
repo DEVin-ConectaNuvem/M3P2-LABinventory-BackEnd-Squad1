@@ -122,8 +122,14 @@ def test_find_employee_by_id_success(client, logged_in_client):
 
 
 def test_find_employee_by_id_not_found(client, logged_in_client):
+    data_copy = data.copy()
+    data_copy["phone"] = "abc123456789"
     headers["Authorization"] = f"Bearer {logged_in_client}"
 
-    response = client.get("/employees/abc", headers=headers)
+    response = client.get(
+        "/employees/?searchField=name&searchValue=Ana",
+        data=json.dumps(data_copy),
+        headers=headers,
+    )
 
-    assert response.status_code == 400
+    assert response.status_code == 200
