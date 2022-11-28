@@ -8,6 +8,28 @@ from src.app.validators import adjust_errors_from_mongoschema
 
 inventory = Blueprint("inventory", __name__, url_prefix="/inventory")
 inventorys_service = Inventory_Service()
+"""
+/create - POST
+    request:
+        body = {
+            codPatrimonio : string - required : true
+            title : string - required : true
+            description : string - required : true
+            category : string - required : true
+            value : number - required : true
+            brand : string - required : true
+            model : string - required : true
+
+    }
+     
+    responses:
+        status 201:
+            description: Success
+        status 400:
+            description: Invalid
+        status 403:
+            description: Error permission
+"""
 
 
 @inventory.route("/create", methods=["POST"])
@@ -21,6 +43,26 @@ def create():
         return adjust_errors_from_mongoschema(response), status_return
 
     return Response(json_util.dumps(response), status=201, mimetype="application/json")
+
+
+"""
+/list - GET
+    request:
+        possible params:
+            searchField - (i.e. code - title - description)
+            searchValue - (i.e. value that will be searched across the selected field)
+            operatorSearch - (i.e. like)
+
+        Example of search using params: /?searchField=code&searchValue=12&operatorSearch=like
+     
+    responses:
+        status 200:
+            description: Success
+        status 400:
+            description: Invalid
+        status 403:
+            description: Error permission
+"""
 
 
 @inventory.route("/", methods=["GET"])
@@ -51,6 +93,21 @@ def get_all():
     )
 
 
+"""
+/<id> - GET
+    request:
+        use id as a param
+
+    responses:
+        status 200:
+            description: Success
+        status 400:
+            description: Invalid
+        status 403:
+            description: Error permission
+"""
+
+
 @inventory.route("/<id>", methods=["GET"])
 @requires_access_level(["READ"])
 def get_by_id(id):
@@ -63,6 +120,26 @@ def get_by_id(id):
     return Response(
         response=json_util.dumps(response), status=200, mimetype="application/json"
     )
+
+
+"""
+/list - GET
+    request:
+        possible params:
+            searchField - (i.e. code - title - description)
+            searchValue - (i.e. value that will be searched across the selected field)
+            operatorSearch - (i.e. like)
+
+        Example of search using params: /?searchField=code&searchValue=12&operatorSearch=like
+     
+    responses:
+        status 200:
+            description: Success
+        status 400:
+            description: Invalid
+        status 403:
+            description: Error permission
+"""
 
 
 @inventory.route("/list", methods=["GET"])
@@ -93,6 +170,26 @@ def list():
     )
 
 
+"""
+/update - PATCH
+    request:
+        body = {
+            id : id of the employee that will be updated
+            dataset : {
+                keys_to_be_changed : new_values
+            }
+        }
+     
+    responses:
+        status 200:
+            description: Success
+        status 400:
+            description: Invalid
+        status 403:
+            description: Error permission
+"""
+
+
 @inventory.route("/update", methods=["PATCH"])
 @requires_access_level(["READ", "WRITE", "UPDATE"])
 def update():
@@ -108,6 +205,23 @@ def update():
     )
 
 
+"""
+/delete - DELETE
+    request:
+        body = {
+            id : id of the item that will be deleted
+        }
+     
+    responses:
+        status 200:
+            description: Success
+        status 400:
+            description: Invalid
+        status 403:
+            description: Error permission
+"""
+
+
 @inventory.route("/delete", methods=["DELETE"])
 @requires_access_level(["READ", "WRITE", "UPDATE", "DELETE"])
 def delete():
@@ -120,6 +234,20 @@ def delete():
     return Response(
         response=json_util.dumps(response), status=200, mimetype="application/json"
     )
+
+
+"""
+/analytics - GET
+    request:
+     
+    responses:
+        status 200:
+            description: Success
+        status 400:
+            description: Invalid
+        status 403:
+            description: Error permission
+"""
 
 
 @inventory.route("/analytics", methods=["GET"])
