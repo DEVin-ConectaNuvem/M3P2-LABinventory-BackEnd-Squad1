@@ -107,7 +107,8 @@ def test_find_employee_by_name(client, logged_in_client):
     headers["Authorization"] = f"Bearer {logged_in_client}"
 
     response = client.get(
-        "/employees/?searchField=name&searchValue=Ana" , headers=headers)
+        "/employees/?searchField=name&searchValue=Ana", headers=headers
+    )
 
     assert response.status_code == 200
 
@@ -115,8 +116,7 @@ def test_find_employee_by_name(client, logged_in_client):
 def test_find_employee_by_id_success(client, logged_in_client):
     headers["Authorization"] = f"Bearer {logged_in_client}"
 
-    response = client.get(
-        "/employees/6383746b0b9acf16803e273e", headers=headers)
+    response = client.get("/employees/6383746b0b9acf16803e273e", headers=headers)
 
     assert response.status_code == 200
 
