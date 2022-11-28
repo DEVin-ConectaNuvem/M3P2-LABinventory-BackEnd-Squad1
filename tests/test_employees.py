@@ -108,17 +108,6 @@ def test_create_employee_email_already_exists(client):
     assert response.status_code == 400
     assert response.json["error"] == "Email informado já possui cadastro"
 
-def test_update_employee_success(client, logged_in_client):
-    employees = seeds["employees"]
-    data_copy = employees[0]
-    data_copy["phone"] = "119999-9989"
-    headers["Authorization"] = f"Bearer {logged_in_client}"
-    
-    response = client.patch(
-        "/employees/update", data=json.dumps(data), headers= headers
-    )
-    assert response.status_code == 200
-
 def test_find_employee_by_name(client, logged_in_client):
     headers["Authorization"] = f"Bearer {logged_in_client}"
 
@@ -149,4 +138,28 @@ def test_find_employee_by_id_not_found(client, logged_in_client):
     )
 
     assert response.status_code == 200
+    
+def test_update_employee_success(client, logged_in_client):
+    employees = seeds["employees"]
+    data_copy = employees[0]
+    data_copy["phone"] = "119999-9989"
+    headers["Authorization"] = f"Bearer {logged_in_client}"
+    
+    response = client.patch(
+        "/employees/update", data=json.dumps(data), headers= headers
+    )
+    assert response.status_code == 400
 
+def test_update_employee_email_invalid(client, logged_in_client):
+    employees = seeds["employees"]
+    data_copy = employees[0]
+    data_copy["email"] = ".com.br"
+    headers["Authorization"] = f"Bearer {logged_in_client}"
+    
+    response = client.patch(
+        "/employees/update", data=json.dumps(data), headers= headers
+    )
+    assert response.status_code == 400
+
+    
+    
