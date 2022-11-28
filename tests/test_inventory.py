@@ -67,3 +67,5 @@ def test_create_inventory_product_code_exists(client):
 
     assert response.status_code == 400
     assert response.json["error"] == "O código de patrimonio informado já existe"
+
+

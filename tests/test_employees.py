@@ -97,6 +97,17 @@ def test_create_employee_invalid_phone(client, logged_in_client):
     assert response.status_code == 400
     assert response.json["error"] == "O campo phone não está no formato correto"
 
+def test_create_employee_email_already_exists(client):
+    data_copy = data.copy()
+    data_copy["email"] = "joaosilvaTeste@gmail.com"
+
+    response = client.post(
+        "/employees/create", data=json.dumps(data_copy), headers= headers
+    )
+
+    assert response.status_code == 400
+    assert response.json["error"] == "Email informado já possui cadastro"
+
 def test_update_employee_success(client, logged_in_client):
     employees = seeds["employees"]
     data_copy = employees[0]
@@ -107,7 +118,6 @@ def test_update_employee_success(client, logged_in_client):
         "/employees/update", data=json.dumps(data), headers= headers
     )
     assert response.status_code == 200
-
 
 def test_find_employee_by_name(client, logged_in_client):
     headers["Authorization"] = f"Bearer {logged_in_client}"
