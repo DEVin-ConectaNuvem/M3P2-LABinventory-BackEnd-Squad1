@@ -3,7 +3,7 @@ from flask_pymongo import PyMongo
 mongo = PyMongo()
 
 from flask import current_app
-from jwt import encode
+from jwt import decode, encode
 
 
 def exist_key(request_json, list_keys):
@@ -24,6 +24,11 @@ def exist_key(request_json, list_keys):
 def generate_jwt(payload):
     token = encode(payload, current_app.config["SECRET_KEY"], "HS256")
     return token
+
+
+def decode_jwt(token):
+    data = decode(token, current_app.config["SECRET_KEY"], algorithms="HS256")
+    return data
 
 
 def convert_id(object):
