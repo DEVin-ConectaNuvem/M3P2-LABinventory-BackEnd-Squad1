@@ -32,14 +32,14 @@ jobs:
           run: docker push $IMAGE_NAME
 
         - name: Deploy Docker image
-          run: gcloud run deploy labinventary --image $IMAGE_NAME --region us-central1 --memory 128Mi --min-instances 0 --max-instances 1 --platform managed --port 5000 --allow-unauthenticated --update-env-vars FLASK_RUN_PORT=5000,FLASK_RUN_HOST=0.0.0.0"
+          run: gcloud run deploy labinventary --image $IMAGE_NAME --region us-central1 --memory 128Mi --min-instances 0 --max-instances 1 --platform managed --port 5000 --allow-unauthenticated --update-env-vars FLASK_RUN_PORT=5000, FLASK_RUN_HOST=0.0.0.0
 
   build:
       runs-on: ubuntu-latest
 
       steps:
         - name: Checkout 
-          uses: actions/checkout@v38080
+          uses: actions/checkout@v3
           
         - name: Login to Docker Hub
           uses: docker/login-action@v2
