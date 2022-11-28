@@ -125,7 +125,6 @@ def test_find_employee_by_id_success(client, logged_in_client):
 
     assert response.status_code == 200
 
-
 def test_find_employee_by_id_not_found(client, logged_in_client):
     data_copy = data.copy()
     data_copy["phone"] = "abc123456789"
