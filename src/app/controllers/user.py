@@ -8,6 +8,18 @@ from src.app.services.users_services import create_user, login_user, current_use
 
 users = Blueprint("users", __name__, url_prefix="/users")
 
+"""
+/me - GET
+    request:
+
+    responses:
+        status 200:
+            description: Success
+        status 401:
+            description: Invalid
+
+"""
+
 
 @users.route("/me", methods=["GET"])
 def user_logged():
@@ -26,6 +38,24 @@ def user_logged():
     return Response(response=json.dumps(response), status=200)
 
 
+"""
+/create - POST
+    request:
+        body = {
+            email : string - required : true
+            password : string - required : true
+    }
+
+        Example of search using params: /?searchField=code&searchValue=12&operatorSearch=like
+     
+    responses:
+        status 200:
+            description: Success
+        status 400:
+            description: Invalid
+"""
+
+
 @users.route("/create", methods=["POST"])
 def create():
     response = create_user(request.get_json())
@@ -38,6 +68,23 @@ def create():
     return Response(
         response=json_util.dumps(response), status=201, mimetype="application/json"
     )
+
+
+"""
+/login - POST
+    request:
+        body = {
+            email : string - required : true
+            password : string - required : true
+    }
+
+    responses:
+        status 201:
+            description: Success
+        status 400:
+            description: Invalid
+
+"""
 
 
 @users.route("/login", methods=["POST"])
@@ -56,6 +103,25 @@ def login():
     )
 
 
+"""
+/auth/google - POST
+    request:
+        possible params:
+            searchField - (i.e. code - title - description)
+            searchValue - (i.e. value that will be searched across the selected field)
+            operatorSearch - (i.e. like)
+
+        Example of search using params: /?searchField=code&searchValue=12&operatorSearch=like
+     
+    responses:
+        status 200:
+            description: Success
+        status 400:
+            description: Invalid
+
+"""
+
+
 @users.route("/auth/google", methods=["POST"])
 def auth_google():
 
@@ -67,6 +133,19 @@ def auth_google():
         status=200,
         mimetype="application/json",
     )
+
+
+"""
+/callback - GET
+    request:
+
+    responses:
+        status 200:
+            description: Success
+        status 400:
+            description: Invalid
+
+"""
 
 
 @users.route("/callback", methods=["GET"])
