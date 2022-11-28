@@ -104,14 +104,26 @@ def test_create_employee_invalid_phone(client, logged_in_client):
 
 
 def test_find_employee_by_name(client, logged_in_client):
-    data_copy = data.copy()
-    data_copy["phone"] = "abc123456789"
     headers["Authorization"] = f"Bearer {logged_in_client}"
 
     response = client.get(
-        "/employees/?searchField=name&searchValue=Ana",
-        data=json.dumps(data_copy),
-        headers=headers,
-    )
+        "/employees/?searchField=name&searchValue=Ana" , headers=headers)
 
     assert response.status_code == 200
+
+
+def test_find_employee_by_id_success(client, logged_in_client):
+    headers["Authorization"] = f"Bearer {logged_in_client}"
+
+    response = client.get(
+        "/employees/6383746b0b9acf16803e273e", headers=headers)
+
+    assert response.status_code == 200
+
+
+def test_find_employee_by_id_not_found(client, logged_in_client):
+    headers["Authorization"] = f"Bearer {logged_in_client}"
+
+    response = client.get("/employees/abc", headers=headers)
+
+    assert response.status_code == 400

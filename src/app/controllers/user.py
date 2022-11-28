@@ -11,16 +11,18 @@ users = Blueprint("users", __name__, url_prefix="/users")
 
 @users.route("/me", methods=["GET"])
 def user_logged():
-    token = request.headers.get('authorization', None)
-    
-    if not token:
-        return Response(response=json.dumps({'erro': 'Token inválido'}), status=401)
+    token = request.headers.get("authorization", None)
 
-    response = current_user(token.replace('Bearer', '').strip())
-    
-    if 'error' in response:
-        return Response(response=json.dumps(response['error']), status=response['status_code'])
-    
+    if not token:
+        return Response(response=json.dumps({"erro": "Token inválido"}), status=401)
+
+    response = current_user(token.replace("Bearer", "").strip())
+
+    if "error" in response:
+        return Response(
+            response=json.dumps(response["error"]), status=response["status_code"]
+        )
+
     return Response(response=json.dumps(response), status=200)
 
 
