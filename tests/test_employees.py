@@ -1,8 +1,12 @@
 import json
+
 from random import randint
+from src.app.database.seeds import seeds
+
 
 mimetype = "application/json"
 url = "/employees/create"
+
 
 headers = {"Content-Type": mimetype, "Accept": mimetype}
 
@@ -98,6 +102,18 @@ def test_create_employee_invalid_phone(client, logged_in_client):
     response = client.post(
         "/employees/create", data=json.dumps(data_copy), headers=headers
     )
-
+    
     assert response.status_code == 400
     assert response.json["error"] == "O campo phone não está no formato correto"
+
+
+def test_update_employee_success(client):
+    employees = seeds["employees"]
+    data_copy = employees[0]
+    data_copy["phone"] = "119999-9989"
+    response = client.patch(
+        "/employees/update", data=json.dumps(data), headers= headers
+    )
+    assert response.status_code == 400
+
+
