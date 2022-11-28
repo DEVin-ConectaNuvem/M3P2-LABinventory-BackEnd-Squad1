@@ -109,7 +109,9 @@ def test_find_employee_by_name(client, logged_in_client):
     headers["Authorization"] = f"Bearer {logged_in_client}"
 
     response = client.get(
-        "/employees/?searchField=name&searchValue=Ana", data=json.dumps(data_copy), headers=headers
+        "/employees/?searchField=name&searchValue=Ana",
+        data=json.dumps(data_copy),
+        headers=headers,
     )
 
     assert response.status_code == 200
