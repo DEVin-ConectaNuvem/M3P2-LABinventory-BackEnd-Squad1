@@ -4,9 +4,26 @@ from flask.globals import session
 from flask.wrappers import Response
 
 from src.app.services.oauth2_services import callback_google, flow
-from src.app.services.users_services import create_user, login_user
+from src.app.services.users_services import create_user, login_user, current_user
 
 users = Blueprint("users", __name__, url_prefix="/users")
+
+
+@users.route("/me", methods=["GET"])
+def user_logged():
+    token = request.headers.get("authorization", None)
+
+    if not token:
+        return Response(response=json.dumps({"erro": "Token inválido"}), status=401)
+
+    response = current_user(token.replace("Bearer", "").strip())
+
+    if "error" in response:
+        return Response(
+            response=json.dumps(response["error"]), status=response["status_code"]
+        )
+
+    return Response(response=json.dumps(response), status=200)
 
 
 @users.route("/create", methods=["POST"])
