@@ -66,22 +66,21 @@ def login_user(request_data):
 
 def current_user(token):
     data = decode_jwt(token)
-    
+
     user_query = mongo_client.users.find_one({"email": data["email"]})
-    
+
     if user_query is None:
-            return {"error": "Usuário não encontrado", "status_code": 404}
-        
+        return {"error": "Usuário não encontrado", "status_code": 404}
+
     role_query = mongo_client.roles.find_one({"_id": ObjectId(user_query["role"])})
-    
+
     user_data = {
-            "email": user_query["email"],
-            "roles_description": role_query["description"],
-            "roles_permissions": role_query["permissions"],
-            "exp": data['exp']
-        }
-          
-    
+        "email": user_query["email"],
+        "roles_description": role_query["description"],
+        "roles_permissions": role_query["permissions"],
+        "exp": data["exp"],
+    }
+
     return user_data
 
 
